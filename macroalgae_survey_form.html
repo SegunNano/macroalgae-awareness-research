@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seaweed as Food — Consumer Survey · NIOMR Lagos</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Progress -->
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<div class="step-counter" id="step-counter" style="display:none">
+  Step <span id="step-current">1</span> of <span id="step-total">1</span>
+</div>
+
+<div class="wrapper">
+<div class="survey-shell" id="survey-content">
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 0 — WELCOME
+  ══════════════════════════════════════════ -->
+  <div class="screen active" id="screen-0">
+    <div class="welcome-card">
+      <span class="welcome-icon">🌿</span>
+      <p class="welcome-eyebrow">Consumer Research · NIOMR Lagos</p>
+      <h1>Do you eat <em>seaweed</em>?<br>Should Nigeria?</h1>
+      <div class="welcome-meta">
+        <span class="welcome-pill">10–13 minutes</span>
+        <span class="welcome-pill">34 questions</span>
+        <span class="welcome-pill">Completely anonymous</span>
+      </div>
+      <div class="consent-box">
+        You are invited to participate in a research study on the awareness, perception, and dietary acceptance of macroalgae (seaweed) as a food ingredient among urban Lagos residents. Conducted by a Research Intern at the Nigerian Institute for Oceanography and Marine Research (NIOMR). Your responses are anonymous and used solely for academic research, which may be published in a scientific journal.
+      </div>
+      <button class="btn-primary" onclick="startSurvey()">
+        I agree — Begin Survey
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 1 — SECTION A BRIDGE
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="screen-1">
+    <div class="section-bridge">
+      <span class="bridge-icon">👤</span>
+      <p class="bridge-label">Section A of 6</p>
+      <h2>A little about you</h2>
+      <p>These 8 questions help us understand the diversity of people in this study. No identifying information is collected.</p>
+      <button class="btn-next" onclick="goTo(2)">
+        Let's go
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       Q1 — AGE
+  ══════════════════════════════════════════ -->
+  <div class="screen" id="screen-2">
+    <div class="q-card">
+      <span class="section-label">Section A · Demographics</span>
+      <p class="q-num">Question 1 of 34</p>
+      <h2 class="q-text">What is your <em>age group?</em></h2>
+      <div class="options" id="q1-opts">
+        <label class="opt-label"><input type="radio" name="q1" value="18–24 years"><div class="opt-dot"></div><span class="opt-text">18–24 years</span></label>
+        <label class="opt-label"><input type="radio" name="q1" value="25–34 years"><div class="opt-dot"></div><span class="opt-text">25–34 years</span></label>
+        <label class="opt-label"><input type="radio" name="q1" value="35–44 years"><div class="opt-dot"></div><span class="opt-text">35–44 years</span></label>
+        <label class="opt-label"><input type="radio" name="q1" value="45–54 years"><div class="opt-dot"></div><span class="opt-text">45–54 years</span></label>
+        <label class="opt-label"><input type="radio" name="q1" value="55 years and above"><div class="opt-dot"></div><span class="opt-text">55 years and above</span></label>
+      </div>
+      <div class="error-msg" id="err-q1">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(1)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q1', 3)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q2 — GENDER -->
+  <div class="screen" id="screen-3">
+    <div class="q-card">
+      <span class="section-label">Section A · Demographics</span>
+      <p class="q-num">Question 2 of 34</p>
+      <h2 class="q-text">What is your <em>gender?</em></h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q2" value="Male"><div class="opt-dot"></div><span class="opt-text">Male</span></label>
+        <label class="opt-label"><input type="radio" name="q2" value="Female"><div class="opt-dot"></div><span class="opt-text">Female</span></label>
+        <label class="opt-label"><input type="radio" name="q2" value="Prefer not to say"><div class="opt-dot"></div><span class="opt-text">Prefer not to say</span></label>
+      </div>
+      <div class="error-msg" id="err-q2">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(2)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q2', 4)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q3 — EDUCATION -->
+  <div class="screen" id="screen-4">
+    <div class="q-card">
+      <span class="section-label">Section A · Demographics</span>
+      <p class="q-num">Question 3 of 34</p>
+      <h2 class="q-text">Highest level of <em>education</em> completed?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q3" value="Secondary school (WAEC/NECO)"><div class="opt-dot"></div><span class="opt-text">Secondary school (WAEC / NECO or equivalent)</span></label>
+        <label class="opt-label"><input type="radio" name="q3" value="Diploma/OND/NCE"><div class="opt-dot"></div><span class="opt-text">Diploma / OND / NCE</span></label>
+        <label class="opt-label"><input type="radio" name="q3" value="Bachelor's degree"><div class="opt-dot"></div><span class="opt-text">Bachelor's degree (B.Sc., B.A., B.Tech., etc.)</span></label>
+        <label class="opt-label"><input type="radio" name="q3" value="Postgraduate degree"><div class="opt-dot"></div><span class="opt-text">Postgraduate degree (M.Sc., MBA, Ph.D., etc.)</span></label>
+      </div>
+      <div class="error-msg" id="err-q3">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(3)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q3', 5)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 — OCCUPATION -->
+  <div class="screen" id="screen-5">
+    <div class="q-card">
+      <span class="section-label">Section A · Demographics</span>
+      <p class="q-num">Question 4 of 34</p>
+      <h2 class="q-text">What is your current <em>occupation?</em></h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q4" value="Student"><div class="opt-dot"></div><span class="opt-text">Student</span></label>
+        <label class="opt-label"><input type="radio" name="q4" value="Civil servant/Government employee"><div class="opt-dot"></div><span class="opt-text">Civil servant / Government employee</span></label>
+        <label class="opt-label"><input type="radio" name="q4" value="Private sector/Corporate employee"><div class="opt-dot"></div><span class="opt-text">Private sector / Corporate employee</span></label>
+        <label class="opt-label"><input type="radio" name="q4" value="Self-employed/Business owner"><div class="opt-dot"></div><span class="opt-text">Self-employed / Business owner</span></label>
+        <label class="opt-label"><input type="radio" name="q4" value="Healthcare professional"><div class="opt-dot"></div><span class="opt-text">Healthcare professional</span></label>
+        <label class="opt-label"><input type="radio" name="q4" value="Unemployed"><div class="opt-dot"></div><span class="opt-text">Unemployed / Not currently working</span></label>
+        <label class="opt-label"><input type="radio" name="q4" value="Other"><div class="opt-dot"></div><span class="opt-text">Other</span></label>
+      </div>
+      <div class="error-msg" id="err-q4">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(4)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q4', 6)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q5 — INCOME -->
+  <div class="screen" id="screen-6">
+    <div class="q-card">
+      <span class="section-label">Section A · Demographics</span>
+      <p class="q-num">Question 5 of 34</p>
+      <h2 class="q-text">Approximate <em>monthly income?</em></h2>
+      <p class="q-hint">Use household income if you are a student. Responses are completely anonymous.</p>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q5" value="Below ₦50,000"><div class="opt-dot"></div><span class="opt-text">Below ₦50,000</span></label>
+        <label class="opt-label"><input type="radio" name="q5" value="₦50,000–₦150,000"><div class="opt-dot"></div><span class="opt-text">₦50,000 – ₦150,000</span></label>
+        <label class="opt-label"><input type="radio" name="q5" value="₦150,001–₦300,000"><div class="opt-dot"></div><span class="opt-text">₦150,001 – ₦300,000</span></label>
+        <label class="opt-label"><input type="radio" name="q5" value="₦300,001–₦500,000"><div class="opt-dot"></div><span class="opt-text">₦300,001 – ₦500,000</span></label>
+        <label class="opt-label"><input type="radio" name="q5" value="Above ₦500,000"><div class="opt-dot"></div><span class="opt-text">Above ₦500,000</span></label>
+        <label class="opt-label"><input type="radio" name="q5" value="Prefer not to say"><div class="opt-dot"></div><span class="opt-text">Prefer not to say</span></label>
+      </div>
+      <div class="error-msg" id="err-q5">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(5)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q5', 7)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q6 — AREA -->
+  <div class="screen" id="screen-7">
+    <div class="q-card">
+      <span class="section-label">Section A · Demographics</span>
+      <p class="q-num">Question 6 of 34</p>
+      <h2 class="q-text">Which area of Lagos do you <em>primarily reside in?</em></h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q6" value="Lagos Island/Eti-Osa"><div class="opt-dot"></div><span class="opt-text">Lagos Island / Eti-Osa</span></label>
+        <label class="opt-label"><input type="radio" name="q6" value="Lagos Mainland/Surulere/Shomolu"><div class="opt-dot"></div><span class="opt-text">Lagos Mainland / Surulere / Shomolu</span></label>
+        <label class="opt-label"><input type="radio" name="q6" value="Ikeja/Agege/Alimosho"><div class="opt-dot"></div><span class="opt-text">Ikeja / Agege / Alimosho</span></label>
+        <label class="opt-label"><input type="radio" name="q6" value="Lekki/Ajah/Ibeju-Lekki"><div class="opt-dot"></div><span class="opt-text">Lekki / Ajah / Ibeju-Lekki</span></label>
+        <label class="opt-label"><input type="radio" name="q6" value="Badagry/Epe (coastal)"><div class="opt-dot"></div><span class="opt-text">Badagry / Epe (coastal areas)</span></label>
+        <label class="opt-label"><input type="radio" name="q6" value="Other area within Lagos"><div class="opt-dot"></div><span class="opt-text">Other area within Lagos</span></label>
+      </div>
+      <div class="error-msg" id="err-q6">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(6)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q6', 8)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q7 — COASTAL -->
+  <div class="screen" id="screen-8">
+    <div class="q-card">
+      <span class="section-label">Section A · Demographics</span>
+      <p class="q-num">Question 7 of 34</p>
+      <h2 class="q-text">Have you ever lived near a <em>coastal or riverine area?</em></h2>
+      <p class="q-hint">Sea, lagoon, or river community — at any point in your life.</p>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q7" value="Yes, currently"><div class="opt-dot"></div><span class="opt-text">Yes — I currently live near one</span></label>
+        <label class="opt-label"><input type="radio" name="q7" value="Yes, in the past"><div class="opt-dot"></div><span class="opt-text">Yes — I lived near one in the past</span></label>
+        <label class="opt-label"><input type="radio" name="q7" value="No"><div class="opt-dot"></div><span class="opt-text">No — never lived near a coastal or riverine area</span></label>
+      </div>
+      <div class="error-msg" id="err-q7">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(7)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q7', 9)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q8 — HEALTH INTEREST -->
+  <div class="screen" id="screen-9">
+    <div class="q-card">
+      <span class="section-label">Section A · Demographics</span>
+      <p class="q-num">Question 8 of 34</p>
+      <h2 class="q-text">How would you describe your interest in <em>healthy eating?</em></h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q8" value="Very interested"><div class="opt-dot"></div><span class="opt-text">Very interested — I actively research nutrition and seek healthier options</span></label>
+        <label class="opt-label"><input type="radio" name="q8" value="Somewhat interested"><div class="opt-dot"></div><span class="opt-text">Somewhat interested — I think about it occasionally</span></label>
+        <label class="opt-label"><input type="radio" name="q8" value="Neutral"><div class="opt-dot"></div><span class="opt-text">Neutral — I eat what is available without much thought</span></label>
+        <label class="opt-label"><input type="radio" name="q8" value="Not interested"><div class="opt-dot"></div><span class="opt-text">Not interested in healthy eating</span></label>
+      </div>
+      <div class="error-msg" id="err-q8">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(8)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q8', 10)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION B BRIDGE -->
+  <div class="screen" id="screen-10">
+    <div class="section-bridge">
+      <span class="bridge-icon">🌊</span>
+      <p class="bridge-label">Section B of 6</p>
+      <h2>Awareness & Encounter</h2>
+      <p>Have you ever come across seaweed as food? This section explores what you already know — and how you came to know it.</p>
+      <div class="nav-row" style="justify-content:center;gap:12px;">
+        <button class="btn-back" onclick="goTo(9)">← Back</button>
+        <button class="btn-next" onclick="goTo(11)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q9 — AWARENESS (skip trigger) -->
+  <div class="screen" id="screen-11">
+    <div class="q-card">
+      <span class="section-label">Section B · Awareness</span>
+      <p class="q-num">Question 9 of 34</p>
+      <h2 class="q-text">Have you ever heard of <em>seaweed</em> being eaten as food?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q9" value="Yes"><div class="opt-dot"></div><span class="opt-text">Yes — I have heard of it and know what it is</span></label>
+        <label class="opt-label"><input type="radio" name="q9" value="Heard the term"><div class="opt-dot"></div><span class="opt-text">I have heard the term but am not sure what it means</span></label>
+        <label class="opt-label"><input type="radio" name="q9" value="No"><div class="opt-dot"></div><span class="opt-text">No — I have never heard of seaweed as food</span></label>
+      </div>
+      <div class="error-msg" id="err-q9">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(10)">← Back</button>
+        <button class="btn-next" onclick="skipQ9()">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q10 — SPECIES (skip target if Q9=No) -->
+  <div class="screen" id="screen-12">
+    <div class="q-card">
+      <span class="section-label">Section B · Awareness</span>
+      <p class="q-num">Question 10 of 34</p>
+      <h2 class="q-text">Which of these have you <em>come across?</em></h2>
+      <p class="q-hint">Select all that apply.</p>
+      <div class="options">
+        <label class="opt-label"><input type="checkbox" name="q10" value="Nori"><div class="opt-sq"></div><span class="opt-text">Nori — dried seaweed sheets used in sushi</span></label>
+        <label class="opt-label"><input type="checkbox" name="q10" value="Wakame"><div class="opt-sq"></div><span class="opt-text">Wakame — used in miso soup and Asian salads</span></label>
+        <label class="opt-label"><input type="checkbox" name="q10" value="Sargassum"><div class="opt-sq"></div><span class="opt-text">Sargassum — brown seaweed found on Nigerian beaches</span></label>
+        <label class="opt-label"><input type="checkbox" name="q10" value="Ulva (sea lettuce)"><div class="opt-sq"></div><span class="opt-text">Sea lettuce / green seaweed (Ulva)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q10" value="Seaweed supplements"><div class="opt-sq"></div><span class="opt-text">Seaweed supplements or powder</span></label>
+        <label class="opt-label"><input type="checkbox" name="q10" value="Carrageenan"><div class="opt-sq"></div><span class="opt-text">Carrageenan — seaweed extract in processed foods</span></label>
+        <label class="opt-label"><input type="checkbox" name="q10" value="None specifically"><div class="opt-sq"></div><span class="opt-text">None of the above specifically</span></label>
+      </div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(11)">← Back</button>
+        <button class="btn-next" onclick="goTo(13)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q11 — INFO SOURCE -->
+  <div class="screen" id="screen-13">
+    <div class="q-card">
+      <span class="section-label">Section B · Awareness</span>
+      <p class="q-num">Question 11 of 34</p>
+      <h2 class="q-text">Where did you <em>first learn</em> about seaweed as food?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q11" value="Social media"><div class="opt-dot"></div><span class="opt-text">Social media (Instagram, TikTok, YouTube, Twitter/X)</span></label>
+        <label class="opt-label"><input type="radio" name="q11" value="Restaurant experience"><div class="opt-dot"></div><span class="opt-text">Restaurant or food experience (e.g., sushi restaurant)</span></label>
+        <label class="opt-label"><input type="radio" name="q11" value="Health/wellness blog"><div class="opt-dot"></div><span class="opt-text">Health / wellness blog or website</span></label>
+        <label class="opt-label"><input type="radio" name="q11" value="Academic/university"><div class="opt-dot"></div><span class="opt-text">University, school, or academic context</span></label>
+        <label class="opt-label"><input type="radio" name="q11" value="Healthcare professional"><div class="opt-dot"></div><span class="opt-text">Healthcare professional</span></label>
+        <label class="opt-label"><input type="radio" name="q11" value="Supermarket/pharmacy"><div class="opt-dot"></div><span class="opt-text">Supermarket, pharmacy, or health food store</span></label>
+        <label class="opt-label"><input type="radio" name="q11" value="Family/friends"><div class="opt-dot"></div><span class="opt-text">Family or friends</span></label>
+        <label class="opt-label"><input type="radio" name="q11" value="Coastal community"><div class="opt-dot"></div><span class="opt-text">Local coastal or fishing community</span></label>
+      </div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBackFromQ11()">← Back</button>
+        <button class="btn-next" onclick="goTo(14)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q12 — PHOTO RECOGNITION -->
+  <div class="screen" id="screen-14">
+    <div class="q-card">
+      <span class="section-label">Section B · Awareness</span>
+      <p class="q-num">Question 12 of 34</p>
+      <h2 class="q-text">Do you recognise any of these as <em>edible seaweeds?</em></h2>
+      <p class="q-hint">Tap each image you recognise as something that can be eaten. Select all that apply.</p>
+      <div class="photo-grid">
+        <div class="photo-opt" id="photo-a" onclick="togglePhoto('photo-a','Image A')">
+          <div class="photo-img"><div class="photo-img-placeholder"><span>🟫</span><small>Replace with real photo</small></div></div>
+          <div class="photo-caption">Image A · <em>Nori sheet</em></div>
+        </div>
+        <div class="photo-opt" id="photo-b" onclick="togglePhoto('photo-b','Image B')">
+          <div class="photo-img"><div class="photo-img-placeholder"><span>🟤</span><small>Replace with real photo</small></div></div>
+          <div class="photo-caption">Image B · <em>Sargassum sp.</em></div>
+        </div>
+        <div class="photo-opt" id="photo-c" onclick="togglePhoto('photo-c','Image C')">
+          <div class="photo-img"><div class="photo-img-placeholder"><span>🟢</span><small>Replace with real photo</small></div></div>
+          <div class="photo-caption">Image C · <em>Ulva lactuca</em></div>
+        </div>
+        <div class="photo-opt" id="photo-d" onclick="togglePhoto('photo-d','Image D')">
+          <div class="photo-img"><div class="photo-img-placeholder"><span>🔵</span><small>Replace with real photo</small></div></div>
+          <div class="photo-caption">Image D · <em>Gracilaria sp.</em></div>
+        </div>
+      </div>
+      <div class="options">
+        <label class="opt-label"><input type="checkbox" name="q12" value="Seen but not known edible"><div class="opt-sq"></div><span class="opt-text">I have seen some of these but did not know they were edible</span></label>
+        <label class="opt-label"><input type="checkbox" name="q12" value="None recognised"><div class="opt-sq"></div><span class="opt-text">I do not recognise any of these</span></label>
+      </div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(13)">← Back</button>
+        <button class="btn-next" onclick="goTo(15)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q13 — EATEN BEFORE (skip trigger) -->
+  <div class="screen" id="screen-15">
+    <div class="q-card">
+      <span class="section-label">Section B · Awareness</span>
+      <p class="q-num">Question 13 of 34</p>
+      <h2 class="q-text">Have you ever <em>knowingly eaten seaweed</em> as part of a meal?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q13" value="Yes, regularly"><div class="opt-dot"></div><span class="opt-text">Yes — I eat it regularly (once a week or more)</span></label>
+        <label class="opt-label"><input type="radio" name="q13" value="Yes, occasionally"><div class="opt-dot"></div><span class="opt-text">Yes — occasionally (a few times a year)</span></label>
+        <label class="opt-label"><input type="radio" name="q13" value="Yes, once or twice"><div class="opt-dot"></div><span class="opt-text">Yes — I have tried it once or twice</span></label>
+        <label class="opt-label"><input type="radio" name="q13" value="No"><div class="opt-dot"></div><span class="opt-text">No — I have never eaten seaweed</span></label>
+      </div>
+      <div class="error-msg" id="err-q13">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(14)">← Back</button>
+        <button class="btn-next" onclick="skipQ13()">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q14 — FOOD FORM (skip target if Q13=No) -->
+  <div class="screen" id="screen-16">
+    <div class="q-card">
+      <span class="section-label">Section B · Awareness</span>
+      <p class="q-num">Question 14 of 34</p>
+      <h2 class="q-text">In what <em>form</em> have you eaten seaweed?</h2>
+      <p class="q-hint">Select all that apply.</p>
+      <div class="options">
+        <label class="opt-label"><input type="checkbox" name="q14" value="Nori in sushi"><div class="opt-sq"></div><span class="opt-text">As nori sheets in sushi or rolls</span></label>
+        <label class="opt-label"><input type="checkbox" name="q14" value="Dried/powdered ingredient"><div class="opt-sq"></div><span class="opt-text">As a dried / powdered ingredient added to food</span></label>
+        <label class="opt-label"><input type="checkbox" name="q14" value="Salad ingredient"><div class="opt-sq"></div><span class="opt-text">As a salad ingredient (fresh or rehydrated)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q14" value="Packaged snack"><div class="opt-sq"></div><span class="opt-text">As a packaged snack (seaweed crisps or chips)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q14" value="Health supplement/drink"><div class="opt-sq"></div><span class="opt-text">As part of a health supplement or drink</span></label>
+        <label class="opt-label"><input type="checkbox" name="q14" value="Traditional preparation"><div class="opt-sq"></div><span class="opt-text">As part of a traditional local food preparation</span></label>
+        <label class="opt-label"><input type="checkbox" name="q14" value="Other form"><div class="opt-sq"></div><span class="opt-text">Other form</span></label>
+      </div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(15)">← Back</button>
+        <button class="btn-next" onclick="goTo(17)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q15 — NUTRITIONAL KNOWLEDGE -->
+  <div class="screen" id="screen-17">
+    <div class="q-card">
+      <span class="section-label">Section B · Awareness</span>
+      <p class="q-num">Question 15 of 34</p>
+      <h2 class="q-text">Did you know seaweed contains <em>iodine, fibre, iron, and antioxidants?</em></h2>
+      <p class="q-hint">Before this survey — how aware were you of these specific nutritional properties?</p>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q15" value="Fully aware"><div class="opt-dot"></div><span class="opt-text">Yes — I was fully aware of these nutritional properties</span></label>
+        <label class="opt-label"><input type="radio" name="q15" value="Partial knowledge"><div class="opt-dot"></div><span class="opt-text">I had partial knowledge (aware of some, not all)</span></label>
+        <label class="opt-label"><input type="radio" name="q15" value="Not aware"><div class="opt-dot"></div><span class="opt-text">No — I was not aware seaweed had these properties</span></label>
+      </div>
+      <div class="error-msg" id="err-q15">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBackFromQ15()">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q15', 18)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION C BRIDGE -->
+  <div class="screen" id="screen-18">
+    <div class="section-bridge">
+      <span class="bridge-icon">🧠</span>
+      <p class="bridge-label">Section C of 6</p>
+      <h2>Perception & Attitude</h2>
+      <p>What do you actually <em>think</em> about seaweed as food? This section explores your beliefs, concerns, and how open you are to new foods.</p>
+      <div class="nav-row" style="justify-content:center;gap:12px;">
+        <button class="btn-back" onclick="goTo(17)">← Back</button>
+        <button class="btn-next" onclick="goTo(19)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q16 — PERCEPTION LIKERT -->
+  <div class="screen" id="screen-19">
+    <div class="q-card">
+      <span class="section-label">Section C · Perception</span>
+      <p class="q-num">Question 16 of 34</p>
+      <h2 class="q-text">Rate your agreement with each <em>statement about seaweed.</em></h2>
+      <p class="q-hint">1 = Strongly disagree &nbsp;·&nbsp; 5 = Strongly agree</p>
+
+      <div class="likert-block">
+        <p class="likert-statement">Seaweed is a healthy food ingredient.</p>
+        <div class="likert-scale" id="q16a-scale">
+          <button type="button" class="lk-btn" onclick="setLikert('q16a',1,this)">1</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16a',2,this)">2</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16a',3,this)">3</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16a',4,this)">4</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16a',5,this)">5</button>
+        </div>
+        <div class="likert-labels"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <hr class="likert-divider">
+      <div class="likert-block">
+        <p class="likert-statement">Seaweed from Nigerian coastal waters is safe to eat.</p>
+        <div class="likert-scale" id="q16b-scale">
+          <button type="button" class="lk-btn" onclick="setLikert('q16b',1,this)">1</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16b',2,this)">2</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16b',3,this)">3</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16b',4,this)">4</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16b',5,this)">5</button>
+        </div>
+        <div class="likert-labels"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <hr class="likert-divider">
+      <div class="likert-block">
+        <p class="likert-statement">Seaweed can fit into Nigerian food culture and cuisine.</p>
+        <div class="likert-scale" id="q16c-scale">
+          <button type="button" class="lk-btn" onclick="setLikert('q16c',1,this)">1</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16c',2,this)">2</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16c',3,this)">3</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16c',4,this)">4</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16c',5,this)">5</button>
+        </div>
+        <div class="likert-labels"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <hr class="likert-divider">
+      <div class="likert-block">
+        <p class="likert-statement">I expect seaweed to have an unpleasant taste or smell.</p>
+        <div class="likert-scale" id="q16d-scale">
+          <button type="button" class="lk-btn" onclick="setLikert('q16d',1,this)">1</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16d',2,this)">2</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16d',3,this)">3</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16d',4,this)">4</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16d',5,this)">5</button>
+        </div>
+        <div class="likert-labels"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <hr class="likert-divider">
+      <div class="likert-block">
+        <p class="likert-statement">Seaweed is a viable alternative to conventional food ingredients.</p>
+        <div class="likert-scale" id="q16e-scale">
+          <button type="button" class="lk-btn" onclick="setLikert('q16e',1,this)">1</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16e',2,this)">2</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16e',3,this)">3</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16e',4,this)">4</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q16e',5,this)">5</button>
+        </div>
+        <div class="likert-labels"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <input type="hidden" name="q16a" id="q16a" value="">
+      <input type="hidden" name="q16b" id="q16b" value="">
+      <input type="hidden" name="q16c" id="q16c" value="">
+      <input type="hidden" name="q16d" id="q16d" value="">
+      <input type="hidden" name="q16e" id="q16e" value="">
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(18)">← Back</button>
+        <button class="btn-next" onclick="goTo(20)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q17 — NEOPHOBIA LIKERT -->
+  <div class="screen" id="screen-20">
+    <div class="q-card">
+      <span class="section-label">Section C · Food Neophobia</span>
+      <p class="q-num">Question 17 of 34</p>
+      <h2 class="q-text">How do you feel about <em>trying unfamiliar foods?</em></h2>
+      <p class="q-hint">1 = Strongly disagree &nbsp;·&nbsp; 5 = Strongly agree</p>
+
+      <div class="likert-block">
+        <p class="likert-statement">I am generally willing to try new and unfamiliar foods.</p>
+        <div class="likert-scale">
+          <button type="button" class="lk-btn" onclick="setLikert('q17a',1,this)">1</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17a',2,this)">2</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17a',3,this)">3</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17a',4,this)">4</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17a',5,this)">5</button>
+        </div>
+        <div class="likert-labels"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <hr class="likert-divider">
+      <div class="likert-block">
+        <p class="likert-statement">I would feel uncomfortable eating a food I had never tasted before.</p>
+        <div class="likert-scale">
+          <button type="button" class="lk-btn" onclick="setLikert('q17b',1,this)">1</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17b',2,this)">2</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17b',3,this)">3</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17b',4,this)">4</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17b',5,this)">5</button>
+        </div>
+        <div class="likert-labels"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <hr class="likert-divider">
+      <div class="likert-block">
+        <p class="likert-statement">I trust that unfamiliar foods from the sea can be safe and nutritious.</p>
+        <div class="likert-scale">
+          <button type="button" class="lk-btn" onclick="setLikert('q17c',1,this)">1</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17c',2,this)">2</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17c',3,this)">3</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17c',4,this)">4</button>
+          <button type="button" class="lk-btn" onclick="setLikert('q17c',5,this)">5</button>
+        </div>
+        <div class="likert-labels"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+      <input type="hidden" name="q17a" id="q17a" value="">
+      <input type="hidden" name="q17b" id="q17b" value="">
+      <input type="hidden" name="q17c" id="q17c" value="">
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(19)">← Back</button>
+        <button class="btn-next" onclick="goTo(21)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q18 — PRIMARY CONCERN -->
+  <div class="screen" id="screen-21">
+    <div class="q-card">
+      <span class="section-label">Section C · Perception</span>
+      <p class="q-num">Question 18 of 34</p>
+      <h2 class="q-text">What is your <em>primary concern</em> about eating seaweed?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q18" value="Unfamiliar taste/smell"><div class="opt-dot"></div><span class="opt-text">Unfamiliar taste or unpleasant smell</span></label>
+        <label class="opt-label"><input type="radio" name="q18" value="Contamination/heavy metals"><div class="opt-dot"></div><span class="opt-text">Concerns about contamination or heavy metals in coastal seaweed</span></label>
+        <label class="opt-label"><input type="radio" name="q18" value="Don't know how to prepare"><div class="opt-dot"></div><span class="opt-text">I don't know how to prepare or cook seaweed</span></label>
+        <label class="opt-label"><input type="radio" name="q18" value="Cultural/social acceptance"><div class="opt-dot"></div><span class="opt-text">Cultural or social acceptance — "it is not a Nigerian food"</span></label>
+        <label class="opt-label"><input type="radio" name="q18" value="Price/availability"><div class="opt-dot"></div><span class="opt-text">High price or limited availability in local markets</span></label>
+        <label class="opt-label"><input type="radio" name="q18" value="Lack of certification"><div class="opt-dot"></div><span class="opt-text">Lack of NAFDAC approval or quality certification</span></label>
+        <label class="opt-label"><input type="radio" name="q18" value="No concerns"><div class="opt-dot"></div><span class="opt-text">I have no concerns about eating seaweed</span></label>
+      </div>
+      <div class="error-msg" id="err-q18">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(20)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q18', 22)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q19 — KEY MOTIVATOR -->
+  <div class="screen" id="screen-22">
+    <div class="q-card">
+      <span class="section-label">Section C · Perception</span>
+      <p class="q-num">Question 19 of 34</p>
+      <h2 class="q-text">What would be <em>most important</em> when deciding to eat seaweed?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q19" value="Proven health benefits"><div class="opt-dot"></div><span class="opt-text">Proven health benefits (scientific evidence)</span></label>
+        <label class="opt-label"><input type="radio" name="q19" value="Affordable/accessible"><div class="opt-dot"></div><span class="opt-text">Affordable price and easy availability</span></label>
+        <label class="opt-label"><input type="radio" name="q19" value="NAFDAC certification"><div class="opt-dot"></div><span class="opt-text">NAFDAC approval or quality certification</span></label>
+        <label class="opt-label"><input type="radio" name="q19" value="Doctor recommendation"><div class="opt-dot"></div><span class="opt-text">Recommendation from a doctor or nutritionist</span></label>
+        <label class="opt-label"><input type="radio" name="q19" value="Good taste/easy preparation"><div class="opt-dot"></div><span class="opt-text">Good taste and easy preparation</span></label>
+        <label class="opt-label"><input type="radio" name="q19" value="Locally produced"><div class="opt-dot"></div><span class="opt-text">Locally produced in Nigeria</span></label>
+        <label class="opt-label"><input type="radio" name="q19" value="Environmental sustainability"><div class="opt-dot"></div><span class="opt-text">Environmental sustainability / ocean-friendly sourcing</span></label>
+      </div>
+      <div class="error-msg" id="err-q19">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(21)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q19', 23)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q20 — EVIDENCE THRESHOLD -->
+  <div class="screen" id="screen-23">
+    <div class="q-card">
+      <span class="section-label">Section C · Perception</span>
+      <p class="q-num">Question 20 of 34</p>
+      <h2 class="q-text">What evidence would convince you to <em>regularly eat seaweed?</em></h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q20" value="Published clinical research"><div class="opt-dot"></div><span class="opt-text">Published clinical or scientific research</span></label>
+        <label class="opt-label"><input type="radio" name="q20" value="Nigerian health authority recommendation"><div class="opt-dot"></div><span class="opt-text">Recommendation by a Nigerian health authority</span></label>
+        <label class="opt-label"><input type="radio" name="q20" value="NAFDAC registration sufficient"><div class="opt-dot"></div><span class="opt-text">NAFDAC registration alone is sufficient</span></label>
+        <label class="opt-label"><input type="radio" name="q20" value="Positive testimonials"><div class="opt-dot"></div><span class="opt-text">Positive reviews and testimonials from people I trust</span></label>
+        <label class="opt-label"><input type="radio" name="q20" value="No evidence needed"><div class="opt-dot"></div><span class="opt-text">I would try it with no special evidence needed</span></label>
+        <label class="opt-label"><input type="radio" name="q20" value="Nothing would convince me"><div class="opt-dot"></div><span class="opt-text">Nothing would convince me</span></label>
+      </div>
+      <div class="error-msg" id="err-q20">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(22)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q20', 24)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q21 — SAFETY CONCERN -->
+  <div class="screen" id="screen-24">
+    <div class="q-card">
+      <span class="section-label">Section C · Perception</span>
+      <p class="q-num">Question 21 of 34</p>
+      <h2 class="q-text">How concerned are you about the <em>safety</em> of seaweed from Nigerian coastal waters?</h2>
+      <p class="q-hint">e.g. possible heavy metal contamination or water pollution</p>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q21" value="Very concerned"><div class="opt-dot"></div><span class="opt-text">Very concerned — coastal water quality in Nigeria worries me significantly</span></label>
+        <label class="opt-label"><input type="radio" name="q21" value="Somewhat concerned"><div class="opt-dot"></div><span class="opt-text">Somewhat concerned — it is a factor I would consider</span></label>
+        <label class="opt-label"><input type="radio" name="q21" value="Neutral"><div class="opt-dot"></div><span class="opt-text">Neutral — I have not thought about it</span></label>
+        <label class="opt-label"><input type="radio" name="q21" value="Not very concerned"><div class="opt-dot"></div><span class="opt-text">Not very concerned — proper processing would remove risks</span></label>
+        <label class="opt-label"><input type="radio" name="q21" value="Not concerned at all"><div class="opt-dot"></div><span class="opt-text">Not concerned at all</span></label>
+      </div>
+      <div class="error-msg" id="err-q21">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(23)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q21', 25)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION D BRIDGE -->
+  <div class="screen" id="screen-25">
+    <div class="section-bridge">
+      <span class="bridge-icon">🍽️</span>
+      <p class="bridge-label">Section D of 6</p>
+      <h2>Dietary Acceptance</h2>
+      <p>Would you actually eat seaweed? This section explores your willingness to incorporate it into your regular diet.</p>
+      <div class="nav-row" style="justify-content:center;gap:12px;">
+        <button class="btn-back" onclick="goTo(24)">← Back</button>
+        <button class="btn-next" onclick="goTo(26)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q22 — ACCEPTANCE (skip trigger) -->
+  <div class="screen" id="screen-26">
+    <div class="q-card">
+      <span class="section-label">Section D · Acceptance</span>
+      <p class="q-num">Question 22 of 34</p>
+      <h2 class="q-text">If seaweed were <em>readily available and affordable</em> in Lagos, would you incorporate it into your diet?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q22" value="Very willing"><div class="opt-dot"></div><span class="opt-text">Very willing — I would actively seek seaweed-based foods</span></label>
+        <label class="opt-label"><input type="radio" name="q22" value="Willing"><div class="opt-dot"></div><span class="opt-text">Willing — I would try them if accessible</span></label>
+        <label class="opt-label"><input type="radio" name="q22" value="Neutral"><div class="opt-dot"></div><span class="opt-text">Neutral — I might try once but would not commit regularly</span></label>
+        <label class="opt-label"><input type="radio" name="q22" value="Unwilling"><div class="opt-dot"></div><span class="opt-text">Unwilling — I would prefer conventional food options</span></label>
+        <label class="opt-label"><input type="radio" name="q22" value="Completely unwilling"><div class="opt-dot"></div><span class="opt-text">Completely unwilling — I would not eat seaweed</span></label>
+      </div>
+      <div class="error-msg" id="err-q22">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(25)">← Back</button>
+        <button class="btn-next" onclick="skipQ22()">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q23 — PREFERRED FORMATS (skip target) -->
+  <div class="screen" id="screen-27">
+    <div class="q-card">
+      <span class="section-label">Section D · Acceptance</span>
+      <p class="q-num">Question 23 of 34</p>
+      <h2 class="q-text">In which Nigerian food formats would you <em>most willingly eat seaweed?</em></h2>
+      <p class="q-hint">Select all that apply.</p>
+      <div class="options">
+        <label class="opt-label"><input type="checkbox" name="q23" value="Soup/stew powder (like crayfish)"><div class="opt-sq"></div><span class="opt-text">As a dried powder added to soups or stews (like crayfish powder)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q23" value="Seasoning/flavouring"><div class="opt-sq"></div><span class="opt-text">As a seasoning or flavouring ingredient</span></label>
+        <label class="opt-label"><input type="checkbox" name="q23" value="Health supplement (capsules/tablets)"><div class="opt-sq"></div><span class="opt-text">As a health supplement (capsules or tablets)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q23" value="Fortified staples (bread/garri/noodles)"><div class="opt-sq"></div><span class="opt-text">Fortified into staple foods (bread, garri, noodles)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q23" value="Packaged snacks (crisps/chips)"><div class="opt-sq"></div><span class="opt-text">As packaged snacks (seaweed crisps or chips)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q23" value="Fresh/rehydrated salad"><div class="opt-sq"></div><span class="opt-text">Fresh or rehydrated in salads</span></label>
+        <label class="opt-label"><input type="checkbox" name="q23" value="Smoothies/health drinks"><div class="opt-sq"></div><span class="opt-text">In smoothies or health drinks</span></label>
+        <label class="opt-label"><input type="checkbox" name="q23" value="Traditional Nigerian dishes"><div class="opt-sq"></div><span class="opt-text">In traditional Nigerian dishes (banga, egusi, etc.)</span></label>
+      </div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(26)">← Back</button>
+        <button class="btn-next" onclick="goTo(28)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q24 — PRICE PREMIUM -->
+  <div class="screen" id="screen-28">
+    <div class="q-card">
+      <span class="section-label">Section D · Acceptance</span>
+      <p class="q-num">Question 24 of 34</p>
+      <h2 class="q-text">How much more would you pay for a seaweed-based ingredient vs. a <em>conventional equivalent?</em></h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q24" value="Same price or cheaper only"><div class="opt-dot"></div><span class="opt-text">Only if it were the same price or cheaper</span></label>
+        <label class="opt-label"><input type="radio" name="q24" value="Up to 10% more"><div class="opt-dot"></div><span class="opt-text">Up to 10% more</span></label>
+        <label class="opt-label"><input type="radio" name="q24" value="10–25% more"><div class="opt-dot"></div><span class="opt-text">10–25% more</span></label>
+        <label class="opt-label"><input type="radio" name="q24" value="More than 25% if health proven"><div class="opt-dot"></div><span class="opt-text">More than 25% if health benefits are clearly proven</span></label>
+        <label class="opt-label"><input type="radio" name="q24" value="Price doesn't matter"><div class="opt-dot"></div><span class="opt-text">Price does not matter to me if the product is good</span></label>
+      </div>
+      <div class="error-msg" id="err-q24">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goBackFromQ24()">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q24', 29)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q25 — RECOMMENDATION -->
+  <div class="screen" id="screen-29">
+    <div class="q-card">
+      <span class="section-label">Section D · Acceptance</span>
+      <p class="q-num">Question 25 of 34</p>
+      <h2 class="q-text">Would you <em>recommend</em> seaweed-based foods to family or friends if safe and affordable?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q25" value="Definitely yes"><div class="opt-dot"></div><span class="opt-text">Definitely yes</span></label>
+        <label class="opt-label"><input type="radio" name="q25" value="Probably yes"><div class="opt-dot"></div><span class="opt-text">Probably yes</span></label>
+        <label class="opt-label"><input type="radio" name="q25" value="Uncertain"><div class="opt-dot"></div><span class="opt-text">Uncertain</span></label>
+        <label class="opt-label"><input type="radio" name="q25" value="Probably no"><div class="opt-dot"></div><span class="opt-text">Probably no</span></label>
+        <label class="opt-label"><input type="radio" name="q25" value="Definitely no"><div class="opt-dot"></div><span class="opt-text">Definitely no</span></label>
+      </div>
+      <div class="error-msg" id="err-q25">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(28)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q25', 30)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q26 — PREFERRED CHANNEL -->
+  <div class="screen" id="screen-30">
+    <div class="q-card">
+      <span class="section-label">Section D · Acceptance</span>
+      <p class="q-num">Question 26 of 34</p>
+      <h2 class="q-text">Where would you prefer to <em>buy</em> seaweed-based food products?</h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q26" value="Supermarket"><div class="opt-dot"></div><span class="opt-text">Supermarket (Shoprite, Spar, Justrite)</span></label>
+        <label class="opt-label"><input type="radio" name="q26" value="Pharmacy/health food store"><div class="opt-dot"></div><span class="opt-text">Pharmacy or health food store</span></label>
+        <label class="opt-label"><input type="radio" name="q26" value="Online (Jumia/Konga/Instagram)"><div class="opt-dot"></div><span class="opt-text">Online (Jumia, Konga, Instagram vendors)</span></label>
+        <label class="opt-label"><input type="radio" name="q26" value="Open market"><div class="opt-dot"></div><span class="opt-text">Open market (Mile 12, Balogun, etc.)</span></label>
+        <label class="opt-label"><input type="radio" name="q26" value="Directly from farm/producer"><div class="opt-dot"></div><span class="opt-text">Directly from a local farm or producer</span></label>
+        <label class="opt-label"><input type="radio" name="q26" value="No preference"><div class="opt-dot"></div><span class="opt-text">No preference</span></label>
+      </div>
+      <div class="error-msg" id="err-q26">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(29)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q26', 31)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q27 — POLICY SUPPORT -->
+  <div class="screen" id="screen-31">
+    <div class="q-card">
+      <span class="section-label">Section D · Acceptance</span>
+      <p class="q-num">Question 27 of 34</p>
+      <h2 class="q-text">Should Nigerian research institutions invest in developing <em>local seaweed food products?</em></h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q27" value="Strongly yes — food security and blue economy"><div class="opt-dot"></div><span class="opt-text">Strongly yes — important for food security, nutrition, and the blue economy</span></label>
+        <label class="opt-label"><input type="radio" name="q27" value="Yes, could be beneficial"><div class="opt-dot"></div><span class="opt-text">Yes — it could be beneficial</span></label>
+        <label class="opt-label"><input type="radio" name="q27" value="Neutral"><div class="opt-dot"></div><span class="opt-text">Neutral</span></label>
+        <label class="opt-label"><input type="radio" name="q27" value="No, other priorities more important"><div class="opt-dot"></div><span class="opt-text">No — there are more important research priorities</span></label>
+      </div>
+      <div class="error-msg" id="err-q27">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(30)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q27', 32)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION E BRIDGE -->
+  <div class="screen" id="screen-32">
+    <div class="section-bridge">
+      <span class="bridge-icon">🛒</span>
+      <p class="bridge-label">Section E of 6</p>
+      <h2>Your Food Habits</h2>
+      <p>A few quick questions about your current food purchasing and eating habits to give context to your earlier answers.</p>
+      <div class="nav-row" style="justify-content:center;gap:12px;">
+        <button class="btn-back" onclick="goTo(31)">← Back</button>
+        <button class="btn-next" onclick="goTo(33)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q28–Q31 combined on one card -->
+  <div class="screen" id="screen-33">
+    <div class="q-card">
+      <span class="section-label">Section E · Food Behaviour</span>
+      <p class="q-num">Questions 28–31 of 34</p>
+      <h2 class="q-text">Your <em>current food habits</em></h2>
+
+      <p style="font-size:14px;font-weight:500;color:var(--ink-2);margin-bottom:10px;">28. How often do you buy health or functional food products?</p>
+      <div class="options" style="margin-bottom:22px;">
+        <label class="opt-label"><input type="radio" name="q28" value="Weekly or more"><div class="opt-dot"></div><span class="opt-text">Weekly or more</span></label>
+        <label class="opt-label"><input type="radio" name="q28" value="Monthly"><div class="opt-dot"></div><span class="opt-text">Monthly</span></label>
+        <label class="opt-label"><input type="radio" name="q28" value="Every few months"><div class="opt-dot"></div><span class="opt-text">Every few months</span></label>
+        <label class="opt-label"><input type="radio" name="q28" value="Rarely"><div class="opt-dot"></div><span class="opt-text">Rarely</span></label>
+        <label class="opt-label"><input type="radio" name="q28" value="Never"><div class="opt-dot"></div><span class="opt-text">Never</span></label>
+      </div>
+
+      <hr class="likert-divider">
+      <p style="font-size:14px;font-weight:500;color:var(--ink-2);margin-bottom:10px;">29. Which ocean-derived ingredients do you cook with regularly? <em style="font-weight:400;font-style:normal;color:var(--ink-3)">(select all that apply)</em></p>
+      <div class="options" style="margin-bottom:22px;">
+        <label class="opt-label"><input type="checkbox" name="q29" value="Crayfish (dried)"><div class="opt-sq"></div><span class="opt-text">Crayfish (dried)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q29" value="Dried/smoked fish"><div class="opt-sq"></div><span class="opt-text">Dried or smoked fish</span></label>
+        <label class="opt-label"><input type="checkbox" name="q29" value="Periwinkle (isam)"><div class="opt-sq"></div><span class="opt-text">Periwinkle (isam)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q29" value="Stockfish (okporoko)"><div class="opt-sq"></div><span class="opt-text">Stockfish (okporoko)</span></label>
+        <label class="opt-label"><input type="checkbox" name="q29" value="Fresh fish"><div class="opt-sq"></div><span class="opt-text">Fresh fish</span></label>
+        <label class="opt-label"><input type="checkbox" name="q29" value="Prawns/shrimp"><div class="opt-sq"></div><span class="opt-text">Prawns or shrimp</span></label>
+        <label class="opt-label"><input type="checkbox" name="q29" value="None of the above"><div class="opt-sq"></div><span class="opt-text">None of the above</span></label>
+      </div>
+
+      <hr class="likert-divider">
+      <p style="font-size:14px;font-weight:500;color:var(--ink-2);margin-bottom:10px;">30. How do you primarily learn about new food or nutrition products?</p>
+      <div class="options" style="margin-bottom:22px;">
+        <label class="opt-label"><input type="radio" name="q30" value="Social media"><div class="opt-dot"></div><span class="opt-text">Social media (Instagram, TikTok, YouTube, Twitter/X)</span></label>
+        <label class="opt-label"><input type="radio" name="q30" value="Healthcare professionals"><div class="opt-dot"></div><span class="opt-text">Healthcare professionals</span></label>
+        <label class="opt-label"><input type="radio" name="q30" value="Health blogs/websites"><div class="opt-dot"></div><span class="opt-text">Health blogs or websites</span></label>
+        <label class="opt-label"><input type="radio" name="q30" value="TV/radio"><div class="opt-dot"></div><span class="opt-text">Television or radio</span></label>
+        <label class="opt-label"><input type="radio" name="q30" value="Friends/family"><div class="opt-dot"></div><span class="opt-text">Friends and family</span></label>
+        <label class="opt-label"><input type="radio" name="q30" value="Product packaging/supermarket"><div class="opt-dot"></div><span class="opt-text">Product packaging or supermarket display</span></label>
+      </div>
+
+      <hr class="likert-divider">
+      <p style="font-size:14px;font-weight:500;color:var(--ink-2);margin-bottom:10px;">31. How open are you to trying new scientifically-backed ocean-derived food ingredients in the next 12 months?</p>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q31" value="Very open"><div class="opt-dot"></div><span class="opt-text">Very open — I actively look for new nutritious options</span></label>
+        <label class="opt-label"><input type="radio" name="q31" value="Somewhat open"><div class="opt-dot"></div><span class="opt-text">Somewhat open — I would try with good reason</span></label>
+        <label class="opt-label"><input type="radio" name="q31" value="Neutral"><div class="opt-dot"></div><span class="opt-text">Neutral</span></label>
+        <label class="opt-label"><input type="radio" name="q31" value="Not very open"><div class="opt-dot"></div><span class="opt-text">Not very open</span></label>
+        <label class="opt-label"><input type="radio" name="q31" value="Completely closed"><div class="opt-dot"></div><span class="opt-text">Completely closed to novel food ingredients</span></label>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(32)">← Back</button>
+        <button class="btn-next" onclick="goTo(34)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION F BRIDGE -->
+  <div class="screen" id="screen-34">
+    <div class="section-bridge">
+      <span class="bridge-icon">💬</span>
+      <p class="bridge-label">Section F of 6 · Final section</p>
+      <h2>Almost there</h2>
+      <p>Three last questions — including your overall attitude and an optional space to share anything else on your mind.</p>
+      <div class="nav-row" style="justify-content:center;gap:12px;">
+        <button class="btn-back" onclick="goTo(33)">← Back</button>
+        <button class="btn-next" onclick="goTo(35)">Let's finish <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q32 — ADOPTION TRIGGER -->
+  <div class="screen" id="screen-35">
+    <div class="q-card">
+      <span class="section-label">Section F · Closing</span>
+      <p class="q-num">Question 32 of 34</p>
+      <h2 class="q-text">What scenario would make you most comfortable <em>trying seaweed for the first time?</em></h2>
+      <div class="options">
+        <label class="opt-label"><input type="radio" name="q32" value="Free sample at market/event"><div class="opt-dot"></div><span class="opt-text">Trying a free sample at a market, event, or supermarket</span></label>
+        <label class="opt-label"><input type="radio" name="q32" value="Prepared by trusted cook/restaurant"><div class="opt-dot"></div><span class="opt-text">Eating a dish prepared by a trusted cook or restaurant</span></label>
+        <label class="opt-label"><input type="radio" name="q32" value="Doctor/nutritionist recommendation"><div class="opt-dot"></div><span class="opt-text">A doctor or nutritionist recommending I try it</span></label>
+        <label class="opt-label"><input type="radio" name="q32" value="Trusted friend/family eats it"><div class="opt-dot"></div><span class="opt-text">Seeing a trusted friend or family member eat it regularly</span></label>
+        <label class="opt-label"><input type="radio" name="q32" value="Credible scientific article"><div class="opt-dot"></div><span class="opt-text">Reading a credible scientific article about its benefits</span></label>
+        <label class="opt-label"><input type="radio" name="q32" value="Would not try under any circumstances"><div class="opt-dot"></div><span class="opt-text">Nothing — I would not try seaweed under any circumstances</span></label>
+      </div>
+      <div class="error-msg" id="err-q32">Please select an option to continue.</div>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(34)">← Back</button>
+        <button class="btn-next" onclick="nextRequired('q32', 36)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q33 — OVERALL ATTITUDE -->
+  <div class="screen" id="screen-36">
+    <div class="q-card">
+      <span class="section-label">Section F · Closing</span>
+      <p class="q-num">Question 33 of 34</p>
+      <h2 class="q-text">Overall, how <em>positive</em> is your attitude toward seaweed becoming a mainstream food ingredient in Nigeria?</h2>
+      <p class="q-hint">1 = Very negative &nbsp;·&nbsp; 5 = Very positive</p>
+      <div class="likert-scale" style="margin-bottom:8px;">
+        <button type="button" class="lk-btn" onclick="setLikert('q33',1,this)">1</button>
+        <button type="button" class="lk-btn" onclick="setLikert('q33',2,this)">2</button>
+        <button type="button" class="lk-btn" onclick="setLikert('q33',3,this)">3</button>
+        <button type="button" class="lk-btn" onclick="setLikert('q33',4,this)">4</button>
+        <button type="button" class="lk-btn" onclick="setLikert('q33',5,this)">5</button>
+      </div>
+      <div class="likert-labels"><span>Very negative</span><span>Very positive</span></div>
+      <input type="hidden" name="q33" id="q33" value="">
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(35)">← Back</button>
+        <button class="btn-next" onclick="goTo(37)">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q34 — OPEN TEXT + SUBMIT -->
+  <div class="screen" id="screen-37">
+    <div class="q-card">
+      <span class="section-label">Section F · Closing</span>
+      <p class="q-num">Question 34 of 34 · Optional</p>
+      <h2 class="q-text">Any final thoughts about <em>seaweed as food</em> you'd like to share?</h2>
+      <p class="q-hint">This is completely optional. Share experiences, concerns, or ideas — anything you think is relevant.</p>
+      <textarea name="q34" id="q34" placeholder="Your thoughts here (optional)..."></textarea>
+
+      <div style="background:rgba(26,122,88,0.06);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-top:20px;font-size:13px;color:var(--ink-3);line-height:1.65;">
+        By submitting, you confirm your responses are voluntary and anonymous. This data will be used solely for academic research. Contact: <strong style="color:var(--ink-2);">[your.email@niomr.gov.ng]</strong>
+      </div>
+
+      <div class="error-msg" id="err-submit">Something went wrong. Please try again.</div>
+
+      <div class="nav-row">
+        <button class="btn-back" onclick="goTo(36)">← Back</button>
+        <button class="btn-submit" id="submit-btn" onclick="submitSurvey()">
+          Submit Survey ✓
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /survey-shell -->
+
+<!-- THANK YOU -->
+<div id="thank-you-screen" style="display:none;position:relative;z-index:1;width:100%;max-width:640px;margin:0 auto;padding:48px 16px;">
+  <div class="thankyou-card">
+    <div class="ty-circle">🌿</div>
+    <h2>Thank you for participating.</h2>
+    <p>Your response has been recorded and contributes to the first consumer survey on macroalgae food acceptance in Lagos, Nigeria.</p>
+    <p>Results will be published in a peer-reviewed journal. Your participation is genuinely valued.</p>
+    <span class="ty-ref" id="ty-ref">ref: loading...</span>
+  </div>
+</div>
+
+</div><!-- /wrapper -->
+<script src="index.js"></script>
+</body>
+</html>

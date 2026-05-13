@@ -1,0 +1,1749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WASSD — Macroalgae Food Survey Instrument</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;0,700;1,300&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ocean: #0b3d2e;
+  --ocean-mid: #145c42;
+  --ocean-bright: #1e8a60;
+  --seafoam: #a8d5be;
+  --sand: #f5f0e8;
+  --sand-dark: #ede6d6;
+  --ink: #0f1f18;
+  --ink-soft: #3d5248;
+  --ink-muted: #7a9185;
+  --paper: #fafaf7;
+  --card: #ffffff;
+  --warn: #c4622d;
+  --warn-light: #fdf3ed;
+  --gold: #b8860b;
+  --gold-light: #fdf8e8;
+  --border: #dde8e2;
+  --radius: 12px;
+  --shadow: 0 4px 24px rgba(11,61,46,0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Epilogue', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── NAVIGATION ── */
+.nav {
+  background: var(--ocean);
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 2px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 1px solid rgba(168,213,190,0.15);
+}
+.nav-brand {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--seafoam);
+  margin-right: 20px;
+  padding: 14px 0;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+.nav-tabs { display: flex; gap: 2px; overflow-x: auto; }
+.nav-tab {
+  font-family: 'Epilogue', sans-serif;
+  font-size: 12.5px;
+  font-weight: 400;
+  color: rgba(168,213,190,0.6);
+  background: none;
+  border: none;
+  padding: 14px 16px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .2s;
+  white-space: nowrap;
+  letter-spacing: .01em;
+}
+.nav-tab:hover { color: var(--seafoam); }
+.nav-tab.active { color: #fff; border-bottom-color: var(--ocean-bright); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--ocean);
+  padding: 56px 32px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 70% 50%, rgba(30,138,96,0.3) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(168,213,190,0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 720px; margin: 0 auto; position: relative; }
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--seafoam);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-eyebrow::before {
+  content: '';
+  width: 28px; height: 1px;
+  background: var(--seafoam);
+  opacity: .5;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(24px, 3.5vw, 38px);
+  font-weight: 500;
+  line-height: 1.25;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: -.01em;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--seafoam);
+}
+.hero-meta {
+  font-size: 13px;
+  color: rgba(168,213,190,0.7);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.hero-meta span { display: flex; align-items: center; gap: 6px; }
+.hero-meta span::before { content: '◆'; font-size: 6px; color: var(--ocean-bright); }
+
+/* ── CONTAINER ── */
+.container { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* ── STAT STRIP ── */
+.stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 36px;
+  box-shadow: var(--shadow);
+}
+.stat-cell {
+  padding: 20px;
+  text-align: center;
+  border-right: 1px solid var(--border);
+}
+.stat-cell:last-child { border-right: none; }
+.stat-val {
+  font-family: 'Fraunces', serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--ocean-mid);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.stat-key { font-size: 11px; color: var(--ink-muted); letter-spacing: .04em; }
+
+/* ── SECTION CARDS ── */
+.sec-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 32px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 26px;
+  background: linear-gradient(135deg, var(--ocean) 0%, var(--ocean-mid) 100%);
+}
+.sec-letter {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  background: rgba(168,213,190,0.2);
+  border: 1px solid rgba(168,213,190,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--seafoam);
+  flex-shrink: 0;
+}
+.sec-title { font-size: 15px; font-weight: 500; color: #fff; }
+.sec-desc { font-size: 12px; color: rgba(168,213,190,0.7); margin-top: 2px; }
+.sec-body { padding: 24px 26px; }
+
+/* ── QUESTION BLOCK ── */
+.q-block { margin-bottom: 32px; }
+.q-block:last-child { margin-bottom: 0; }
+
+.q-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.q-num {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ocean-bright);
+  background: rgba(30,138,96,0.08);
+  border: 1px solid rgba(30,138,96,0.15);
+  border-radius: 5px;
+  padding: 3px 9px;
+}
+.q-type-badge {
+  font-size: 10.5px;
+  color: var(--ink-muted);
+  background: var(--sand);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 3px 9px;
+}
+.req-badge {
+  font-size: 10px;
+  color: var(--warn);
+  background: var(--warn-light);
+  border: 1px solid rgba(196,98,45,0.2);
+  border-radius: 5px;
+  padding: 3px 9px;
+}
+
+.q-text {
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 400;
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+.q-text strong { font-weight: 600; color: var(--ocean); }
+
+/* RATIONALE BOX — the "why" for each question */
+.rationale {
+  background: var(--gold-light);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: #5c4a00;
+  line-height: 1.65;
+}
+.rationale-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+/* SKIP NOTE */
+.skip-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--warn);
+  background: var(--warn-light);
+  border: 1px solid rgba(196,98,45,0.25);
+  border-radius: 6px;
+  padding: 5px 11px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.skip-note::before { content: "⤷"; font-size: 14px; }
+
+/* OPTIONS */
+.options { display: flex; flex-direction: column; gap: 7px; }
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  transition: all .15s;
+  cursor: pointer;
+}
+.opt:hover { border-color: var(--ocean-bright); background: rgba(30,138,96,0.04); }
+.opt-ctrl {
+  width: 17px; height: 17px;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: border-color .15s;
+}
+.opt-ctrl.radio { border-radius: 50%; }
+.opt-ctrl.check { border-radius: 4px; }
+.opt:hover .opt-ctrl { border-color: var(--ocean-bright); }
+
+.opt.skip-opt {
+  border-color: rgba(196,98,45,0.2);
+  background: var(--warn-light);
+  color: var(--warn);
+}
+.opt.skip-opt .opt-ctrl { border-color: rgba(196,98,45,0.3); }
+
+/* LIKERT */
+.likert-scroll { overflow-x: auto; }
+.likert {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+  font-size: 13px;
+}
+.likert thead th {
+  font-weight: 400;
+  color: var(--ink-muted);
+  padding: 6px 8px;
+  text-align: center;
+  font-size: 11.5px;
+  letter-spacing: .03em;
+}
+.likert thead th:first-child { text-align: left; }
+.likert tbody td {
+  padding: 10px 8px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.likert tbody td:first-child { text-align: left; padding-left: 0; }
+.l-circle {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  display: inline-block;
+  cursor: pointer;
+  transition: all .15s;
+}
+.l-circle:hover { border-color: var(--ocean-bright); background: rgba(30,138,96,0.1); }
+
+/* TEXT INPUT */
+.fake-input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 14px;
+  font-size: 13.5px;
+  color: var(--ink-muted);
+  font-family: 'Epilogue', sans-serif;
+  background: var(--sand);
+}
+.fake-input.tall { height: 80px; }
+
+/* PHOTO BLOCK */
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.photo-card {
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .2s;
+}
+.photo-card:hover { border-color: var(--ocean-bright); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(11,61,46,0.12); }
+.photo-img {
+  width: 100%;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  background: var(--sand);
+}
+.photo-label {
+  padding: 8px 10px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: center;
+  font-style: italic;
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+.photo-options { display: flex; flex-direction: column; gap: 6px; }
+
+/* DIVIDER */
+.qdiv {
+  border: none;
+  border-top: 1px dashed var(--border);
+  margin: 28px 0;
+}
+
+/* ANALYSIS TAG */
+.analysis-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--ocean-mid);
+  background: rgba(20,92,66,0.07);
+  border: 1px solid rgba(20,92,66,0.15);
+  border-radius: 5px;
+  padding: 3px 10px;
+  margin-top: 10px;
+}
+.analysis-tag::before { content: "∑"; font-size: 12px; }
+
+/* ── PUZZLE MAP ── */
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.puzzle-piece {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.puzzle-piece::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.pp-a::before { background: var(--ocean-mid); }
+.pp-b::before { background: #2a6496; }
+.pp-c::before { background: #7b4ea0; }
+.pp-d::before { background: #b87a20; }
+.pp-e::before { background: var(--ocean-bright); }
+.pp-f::before { background: #1a6b5c; }
+
+.pp-letter {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.pp-a .pp-letter { color: var(--ocean-mid); }
+.pp-b .pp-letter { color: #2a6496; }
+.pp-c .pp-letter { color: #7b4ea0; }
+.pp-d .pp-letter { color: #b87a20; }
+.pp-e .pp-letter { color: var(--ocean-bright); }
+.pp-f .pp-letter { color: #1a6b5c; }
+
+.pp-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.pp-role { font-size: 12.5px; color: var(--ink-soft); line-height: 1.55; }
+.pp-feeds {
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--ink-muted);
+}
+.pp-feeds span {
+  display: inline-block;
+  background: var(--sand);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin: 2px 2px 0 0;
+}
+
+.flow-diagram {
+  background: var(--ocean);
+  border-radius: var(--radius);
+  padding: 28px;
+  color: #fff;
+  margin-bottom: 28px;
+}
+.flow-diagram h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: var(--seafoam);
+}
+.flow-chain {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.flow-node {
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  text-align: center;
+}
+.fn-a { background: rgba(20,92,66,0.5); border: 1px solid rgba(168,213,190,0.3); }
+.fn-b { background: rgba(42,100,150,0.4); border: 1px solid rgba(100,160,220,0.3); }
+.fn-c { background: rgba(123,78,160,0.4); border: 1px solid rgba(180,130,220,0.3); }
+.fn-d { background: rgba(184,122,32,0.4); border: 1px solid rgba(220,180,80,0.3); }
+.fn-e { background: rgba(30,138,96,0.4); border: 1px solid rgba(168,213,190,0.3); }
+.fn-f { background: rgba(26,107,92,0.4); border: 1px solid rgba(100,200,180,0.3); }
+.flow-arrow-text { font-size: 18px; color: rgba(168,213,190,0.4); }
+
+/* ── MANUSCRIPT ── */
+.ms-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+.ms-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s;
+}
+.ms-head:hover { background: var(--sand); }
+.ms-head-left { display: flex; align-items: center; gap: 14px; }
+.ms-badge {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--ocean);
+  color: var(--seafoam);
+  font-family: 'Fraunces', serif;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.ms-title { font-size: 15px; font-weight: 500; }
+.ms-right { display: flex; align-items: center; gap: 14px; }
+.ms-wc { font-size: 12px; color: var(--ink-muted); }
+.ms-chevron { font-size: 14px; color: var(--ink-muted); transition: transform .2s; }
+.ms-chevron.open { transform: rotate(180deg); }
+.ms-body {
+  display: none;
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--border);
+}
+.ms-body.open { display: block; }
+.ms-sub {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ocean-bright);
+  margin: 18px 0 8px;
+}
+.ms-p { font-size: 13.5px; color: var(--ink-soft); line-height: 1.75; margin-bottom: 8px; }
+.ms-bullet {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 6px;
+}
+.ms-bullet::before { content: "—"; position: absolute; left: 0; color: var(--ocean-bright); }
+.ms-tip {
+  background: rgba(30,138,96,0.07);
+  border-left: 3px solid var(--ocean-bright);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--ocean-mid);
+  line-height: 1.65;
+}
+
+@media (max-width: 600px) {
+  .stat-strip { grid-template-columns: repeat(2,1fr); }
+  .puzzle-grid { grid-template-columns: 1fr; }
+  .photo-grid { grid-template-columns: repeat(2,1fr); }
+  .flow-chain { flex-direction: column; align-items: flex-start; }
+  .nav-brand { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">WASSD · Survey</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('survey',this)">Survey Instrument</button>
+    <button class="nav-tab" onclick="showTab('puzzle',this)">Puzzle Map</button>
+    <button class="nav-tab" onclick="showTab('manuscript',this)">Manuscript</button>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════════════
+     TAB 1 — SURVEY INSTRUMENT
+════════════════════════════════════ -->
+<div id="tab-survey" class="tab-panel active">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Google Form Survey Instrument · Rebuilt</div>
+      <h1>Consumer Awareness, Perception &amp; Acceptance of <em>Macroalgae (Seaweed)</em> as a Food Ingredient Among Urban Residents in Lagos, Nigeria</h1>
+      <div class="hero-meta">
+        <span>6 Sections</span>
+        <span>34 Questions</span>
+        <span>4 Skip logic branches</span>
+        <span>Est. 10–13 minutes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="stat-val">34</div><div class="stat-key">Total questions</div></div>
+      <div class="stat-cell"><div class="stat-val">7</div><div class="stat-key">Likert items</div></div>
+      <div class="stat-cell"><div class="stat-val">4</div><div class="stat-key">Photo recognition</div></div>
+      <div class="stat-cell"><div class="stat-val">250+</div><div class="stat-key">Target respondents</div></div>
+    </div>
+
+    <!-- CONSENT -->
+    <div class="sec-card">
+      <div class="sec-head">
+        <div class="sec-letter" style="font-size:13px;">✦</div>
+        <div>
+          <div class="sec-title">Informed Consent</div>
+          <div class="sec-desc">Gate — respondent must agree or form closes</div>
+        </div>
+      </div>
+      <div class="sec-body">
+        <div class="q-block">
+          <div style="background:var(--sand);border:1px solid var(--border);border-radius:8px;padding:16px;font-size:13.5px;color:var(--ink-soft);line-height:1.75;margin-bottom:18px;">
+            You are invited to participate in a research study on the awareness, perception, and dietary acceptance of macroalgae (seaweed) as a food ingredient among urban residents in Lagos. This study is conducted by <strong>[Your Name]</strong>, Research Intern, Nigerian Institute for Oceanography and Marine Research (NIOMR), Lagos.<br><br>
+            Participation is <strong>voluntary and completely anonymous</strong>. No personal identifying information will be collected. Your responses will be used solely for academic research and may be published in a scientific journal. You may withdraw at any time by closing this form.<br><br>
+            <strong>Estimated completion time:</strong> 10–13 minutes.
+          </div>
+          <div class="q-meta">
+            <span class="q-num">Consent</span>
+            <span class="q-type-badge">Multiple choice</span>
+            <span class="req-badge">Required</span>
+          </div>
+          <div class="q-text">Do you agree to participate in this study?</div>
+          <div class="rationale">
+            <div class="rationale-label">Why this question exists</div>
+            This is your ethical gate. Any paper submitted to a journal must demonstrate informed consent was obtained. If the respondent says No, the form submits immediately and their data is not collected. This protects both the respondent and the integrity of your dataset.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes, I agree to participate and understand this is anonymous</div>
+            <div class="opt skip-opt"><div class="opt-ctrl radio"></div>No, I do not wish to participate → <strong>Form closes</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION A -->
+    <div class="sec-card">
+      <div class="sec-head">
+        <div class="sec-letter">A</div>
+        <div>
+          <div class="sec-title">Section A — Sociodemographic Profile</div>
+          <div class="sec-desc">Q1–Q8 · Multiple choice · No skip logic · All required</div>
+        </div>
+      </div>
+      <div class="sec-body">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q1</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">What is your age group?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Age is a predictor variable in your regression model. Food neophobia — fear of unfamiliar foods like seaweed — tends to decrease with younger, more globally exposed consumers. You will test whether younger respondents show greater acceptance. Also needed to describe your sample in Table 1.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>18–24 years</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>25–34 years</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>35–44 years</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>45–54 years</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>55 years and above</div>
+          </div>
+          <div class="analysis-tag">Used in: chi-square (age × acceptance) · regression predictor</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q2</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">What is your gender?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Gender differences in food acceptance and health-food purchasing are well-documented — women in Nigerian urban settings often report higher health consciousness. Including gender lets you test whether acceptance differs significantly by gender via chi-square, which strengthens your results section.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Male</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Female</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Prefer not to say</div>
+          </div>
+          <div class="analysis-tag">Used in: chi-square (gender × acceptance) · sample description</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q3</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">What is your highest level of education completed?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Education is your strongest expected predictor of seaweed awareness. Someone with a postgraduate degree is more likely to have encountered seaweed in scientific, health, or international food contexts. This variable anchors Hypothesis 1 — that education level is significantly associated with awareness.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Secondary school (WAEC / NECO or equivalent)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Diploma / OND / NCE</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Bachelor's degree (B.Sc., B.A., B.Tech., etc.)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Postgraduate degree (M.Sc., MBA, Ph.D., etc.)</div>
+          </div>
+          <div class="analysis-tag">Used in: chi-square (education × awareness) · regression predictor (H1)</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q4</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">What is your current occupation?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Occupation acts as a proxy for both income level and exposure to global food trends. Healthcare professionals, for example, may have stronger health-based motivations for seaweed acceptance. This variable enriches your demographic description and can be collapsed into categories (health-related / non-health-related) for subgroup analysis.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Student</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Civil servant / Government employee</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Private sector / Corporate employee</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Self-employed / Business owner</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Healthcare professional</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Unemployed / Not currently working</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Other</div>
+          </div>
+          <div class="analysis-tag">Used in: sample description · subgroup comparison</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q5</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">What is your approximate monthly income (or household income if a student)?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Income determines purchasing power, which directly affects willingness to incorporate seaweed into the diet — especially if seaweed products cost more than conventional ingredients. This is a key predictor in your regression model (H3). Use brackets rather than exact figures to reduce social desirability bias.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Below ₦50,000</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>₦50,000 – ₦150,000</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>₦150,001 – ₦300,000</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>₦300,001 – ₦500,000</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Above ₦500,000</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Prefer not to say</div>
+          </div>
+          <div class="analysis-tag">Used in: chi-square (income × acceptance) · regression predictor (H3)</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q6</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">What area of Lagos do you primarily reside in?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Geographic distribution within Lagos validates that your sample is not clustered in one socioeconomic zone. It also lets you note whether coastal-adjacent areas (Badagry, Epe) show higher seaweed familiarity — a finding that would be scientifically interesting and directly relevant to your WASSD coastal community work.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Lagos Island / Eti-Osa</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Lagos Mainland / Surulere / Shomolu</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Ikeja / Agege / Alimosho</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Lekki / Ajah / Ibeju-Lekki</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Badagry / Epe (coastal areas)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Other area within Lagos</div>
+          </div>
+          <div class="analysis-tag">Used in: sample geographic distribution · coastal vs. inland subgroup analysis</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q7</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">Have you ever lived near a coastal or riverine area (sea, lagoon, or river community)?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is a unique question that distinguishes your survey from generic food surveys. Coastal proximity strongly predicts prior seaweed encounter — even incidentally (seeing it on beaches, fishing nets, markets). It becomes a binary predictor variable (coastal exposure: yes/no) in your regression, which is a novel analytical contribution.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes — I currently live near a coastal or riverine area</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes — I lived near one in the past but no longer do</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>No — I have never lived near a coastal or riverine area</div>
+          </div>
+          <div class="analysis-tag">Used in: novel binary predictor (coastal exposure) · regression model (H2)</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q8</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">How would you describe your general interest in healthy eating and nutrition?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Health consciousness is a validated construct in food consumer research. This single-item measure gives you a quick proxy — respondents who are actively health-conscious are expected to show greater seaweed acceptance regardless of prior awareness. It directly feeds your regression model and links to the food neophobia literature.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Very interested — I actively research nutrition and seek healthier options</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Somewhat interested — I think about it occasionally</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Neutral — I eat what is available without much thought</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Not interested in healthy eating</div>
+          </div>
+          <div class="analysis-tag">Used in: health consciousness proxy · regression predictor · chi-square</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION B -->
+    <div class="sec-card">
+      <div class="sec-head">
+        <div class="sec-letter">B</div>
+        <div>
+          <div class="sec-title">Section B — Awareness &amp; Prior Encounter</div>
+          <div class="sec-desc">Q9–Q15 · Includes photo recognition block · Skip logic on Q9 and Q14</div>
+        </div>
+      </div>
+      <div class="sec-body">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q9</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required · Skip trigger</span></div>
+          <div class="q-text">Have you ever heard of <strong>seaweed</strong> being used as a food ingredient or eaten as food?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is your primary awareness gate and the most critical single question in the survey. The answer splits your dataset into two groups — aware and unaware — which becomes the dependent variable for H1 (education predicts awareness). It also triggers a skip branch: respondents who say No bypass the species-familiarity questions (which would be meaningless for them) and go directly to the perception section.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes — I have heard of it and know what it is</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>I have heard the term but am not sure what it means</div>
+            <div class="opt skip-opt"><div class="opt-ctrl radio"></div>No — I have never heard of seaweed as food → <strong>Skip to Q13</strong></div>
+          </div>
+          <div class="analysis-tag">Used in: primary awareness variable (H1) · awareness rate % · chi-square</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="skip-note">Shown only if Q9 = "Yes" or "Heard the term"</div>
+          <div class="q-meta"><span class="q-num">Q10</span><span class="q-type-badge">Checkbox (multi-select)</span></div>
+          <div class="q-text">Which of these seaweed or algae terms have you come across? <strong>(Select all that apply)</strong></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This maps the depth of awareness — knowing "seaweed" generically is different from knowing specific species or products. It also contextualises the Nigerian consumer's exposure: nori (from Japanese food culture via Lagos restaurants), wakame (health food stores), local Sargassum (coastal communities). The diversity of responses here enriches your awareness discussion considerably.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl check"></div>Nori (dried seaweed sheets, used in sushi)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Wakame (used in miso soup / Asian salads)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Sargassum (brown seaweed found on Nigerian beaches)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Sea lettuce / green seaweed (Ulva)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Seaweed supplements or powder</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Carrageenan (seaweed extract used in food processing)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>None of the above specifically</div>
+          </div>
+          <div class="analysis-tag">Used in: depth-of-awareness mapping · frequency table in results</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="skip-note">Shown only if Q9 = "Yes" or "Heard the term"</div>
+          <div class="q-meta"><span class="q-num">Q11</span><span class="q-type-badge">Multiple choice</span></div>
+          <div class="q-text">Where did you first encounter information about seaweed as food? <strong>(Select your primary source)</strong></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Information pathway analysis is a key output of awareness studies. Knowing whether Lagosians learn about seaweed from social media, restaurants, or healthcare professionals tells industry and public health actors where to focus educational efforts — this finding is your primary "implications for practice" point in the discussion section.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Social media (Instagram, TikTok, YouTube, Twitter/X)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Restaurant or food experience (e.g., sushi restaurant)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Health / wellness blog or website</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>University, school, or academic context</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Healthcare professional (doctor, nutritionist, pharmacist)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Supermarket, pharmacy, or health food store</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Family or friends</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Local coastal or fishing community</div>
+          </div>
+          <div class="analysis-tag">Used in: information pathway analysis · ranked frequency table · discussion implications</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <!-- PHOTO RECOGNITION BLOCK -->
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q12</span><span class="q-type-badge">Photo recognition grid</span><span class="req-badge">Required</span></div>
+          <div class="q-text">Look at the images below. For each one, indicate whether you recognise it as something edible or food-related.</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role — this is your methodological standout feature</div>
+            Photo recognition questions are rare in Nigerian food surveys and immediately strengthen your paper's methodological section. They bypass the problem of respondents not knowing technical species names while still measuring real familiarity. A respondent who cannot name "Porphyra" may still recognise nori sheets from a Lagos sushi bar. This gives you a recognition score separate from linguistic awareness — a novel contribution.
+          </div>
+          <div class="photo-grid">
+            <div class="photo-card">
+              <div class="photo-img">🌿</div>
+              <div class="photo-label">Image A<br><em>Nori sheet</em></div>
+            </div>
+            <div class="photo-card">
+              <div class="photo-img">🟤</div>
+              <div class="photo-label">Image B<br><em>Sargassum sp.</em></div>
+            </div>
+            <div class="photo-card">
+              <div class="photo-img">💚</div>
+              <div class="photo-label">Image C<br><em>Ulva lactuca</em></div>
+            </div>
+            <div class="photo-card">
+              <div class="photo-img">🌊</div>
+              <div class="photo-label">Image D<br><em>Gracilaria sp.</em></div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:var(--ink-muted);margin-bottom:12px;font-style:italic;">For each image, select the most accurate response:</div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl check"></div>Image A — I recognise this and know it can be eaten</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Image B — I recognise this and know it can be eaten</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Image C — I recognise this and know it can be eaten</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Image D — I recognise this and know it can be eaten</div>
+            <div class="opt"><div class="opt-ctrl check"></div>I have seen some of these but did not know they were edible</div>
+            <div class="opt"><div class="opt-ctrl check"></div>I do not recognise any of these</div>
+          </div>
+          <div style="background:rgba(30,138,96,0.07);border-radius:8px;padding:12px;margin-top:12px;font-size:12.5px;color:var(--ocean-mid);">
+            <strong>Google Forms note:</strong> Upload each species image directly into the question using the image upload icon. Source images from iNaturalist, AlgaeBase, or your own NIOMR photos. Credit the photographer in the form description.
+          </div>
+          <div class="analysis-tag">Used in: visual recognition score (0–4) · novel awareness metric · correlation with Q9</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q13</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required · All respondents</span></div>
+          <div class="q-text">Have you ever knowingly eaten seaweed as part of a meal or as a food ingredient?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is your dietary exposure variable — separate from awareness. Someone can be aware of seaweed without ever eating it. This distinction matters analytically: your discussion can compare awareness rate vs. actual consumption rate and explore the gap between knowledge and behaviour, which is a classic and publishable finding in food science literature.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes — I eat it regularly (once a week or more)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes — occasionally (a few times a year)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes — I have tried it once or twice</div>
+            <div class="opt skip-opt"><div class="opt-ctrl radio"></div>No — I have never eaten seaweed → <strong>Skip to Q15</strong></div>
+          </div>
+          <div class="analysis-tag">Used in: consumption rate % · awareness-to-consumption gap analysis</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="skip-note">Shown only if Q13 = any "Yes" option</div>
+          <div class="q-meta"><span class="q-num">Q14</span><span class="q-type-badge">Checkbox (multi-select)</span></div>
+          <div class="q-text">In what form have you eaten seaweed? <strong>(Select all that apply)</strong></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Form of consumption tells you the current entry points for seaweed into Lagos diets. If most consumers have only had it in sushi restaurants, that indicates a luxury/novelty pathway. If some report it as a soup ingredient or dried powder, that suggests existing traditional or health-based pathways you can build on in your discussion. This directly informs the "recommended seaweed food formats" part of your implications.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl check"></div>As nori sheets in sushi or rolls</div>
+            <div class="opt"><div class="opt-ctrl check"></div>As a dried / powdered ingredient added to soup or food</div>
+            <div class="opt"><div class="opt-ctrl check"></div>As a salad ingredient (fresh or rehydrated)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>As a snack (packaged seaweed crisps or chips)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>As part of a health supplement or drink</div>
+            <div class="opt"><div class="opt-ctrl check"></div>As a traditional local food preparation</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Other form</div>
+          </div>
+          <div class="analysis-tag">Used in: consumption pathway mapping · format preference for recommendations</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q15</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required · All respondents</span></div>
+          <div class="q-text">Before this survey, were you aware that seaweed contains significant levels of <strong>iodine, dietary fibre, iron, and bioactive antioxidants</strong>?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is your nutritional knowledge probe — deliberately specific. Most respondents will say partial or no. The gap between general seaweed awareness (Q9) and specific nutritional knowledge (Q15) is a publishable finding on its own — it shows that even among aware consumers, knowledge of seaweed's nutritional value is low, which justifies the need for targeted education campaigns. This directly supports your conclusion and discussion paragraphs.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes — I was fully aware of these nutritional properties</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>I had partial knowledge (aware of some, not all)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>No — I was not aware seaweed had these nutritional properties</div>
+          </div>
+          <div class="analysis-tag">Used in: nutritional knowledge gap analysis · chi-square (education × nutritional knowledge)</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION C -->
+    <div class="sec-card">
+      <div class="sec-head">
+        <div class="sec-letter">C</div>
+        <div>
+          <div class="sec-title">Section C — Perception, Attitude &amp; Food Neophobia</div>
+          <div class="sec-desc">Q16–Q21 · Likert scale + multiple choice · Core attitudinal data</div>
+        </div>
+      </div>
+      <div class="sec-body">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q16</span><span class="q-type-badge">Likert grid — 5 items (1–5 scale)</span><span class="req-badge">Required</span></div>
+          <div class="q-text">Rate your level of agreement with each statement about seaweed as a food ingredient.<br><span style="font-size:12px;color:var(--ink-muted);">1 = Strongly disagree · 3 = Neutral · 5 = Strongly agree</span></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is your perception subscale — the attitudinal core of the study. The 5 items together form a composite "seaweed food perception score" (sum or mean of all 5). This score becomes a predictor variable in your regression model and is tested for internal consistency with Cronbach's alpha. Each item probes a different dimension: health belief, safety, cultural fit, taste expectation, and dietary suitability.
+          </div>
+          <div class="likert-scroll">
+            <table class="likert">
+              <thead>
+                <tr>
+                  <th>Statement</th>
+                  <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Seaweed is a healthy food ingredient</td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td></tr>
+                <tr><td>Seaweed harvested from Nigerian coastal waters is safe to eat</td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td></tr>
+                <tr><td>Seaweed can fit into Nigerian food culture and cuisine</td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td></tr>
+                <tr><td>I expect seaweed to have an unpleasant taste or smell</td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td></tr>
+                <tr><td>Seaweed is a viable alternative to conventional food ingredients</td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="analysis-tag">Used in: perception composite score · Cronbach's alpha · regression predictor</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q17</span><span class="q-type-badge">Likert grid — Food Neophobia Scale (adapted, 3 items)</span><span class="req-badge">Required</span></div>
+          <div class="q-text">How much do you agree with each of the following statements?<br><span style="font-size:12px;color:var(--ink-muted);">1 = Strongly disagree · 5 = Strongly agree</span></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role — the strongest methodological feature in Section C</div>
+            Food neophobia — the reluctance to eat new or unfamiliar foods — is a validated psychological construct (Pliner & Hobden, 1992) that has never been applied to seaweed consumption in a Nigerian context. Including even a 3-item adapted version lets you cite established psychometric literature, compute a neophobia score, and test whether high neophobia predicts lower seaweed acceptance. This is what separates your paper from a basic awareness survey and makes it genuinely methodologically interesting to reviewers.
+          </div>
+          <div class="likert-scroll">
+            <table class="likert">
+              <thead>
+                <tr>
+                  <th>Statement</th>
+                  <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>I am generally willing to try new and unfamiliar foods</td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td></tr>
+                <tr><td>I would feel uncomfortable eating a food I had never tasted before</td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td></tr>
+                <tr><td>I trust that unfamiliar foods from the sea can be safe and nutritious</td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="analysis-tag">Used in: food neophobia score · Cronbach's alpha · regression predictor (H3) · novel contribution</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q18</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">What is your <strong>primary concern</strong> about eating seaweed as part of your regular diet?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This identifies the dominant barrier — the single most important obstacle standing between seaweed awareness and seaweed consumption. The most frequently selected option directly shapes your "Barriers to acceptance" subsection in the discussion, and tells industry and policy actors exactly where to focus interventions. It is also a validating question — if "I have no concerns" is common, it confirms high baseline acceptance.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Unfamiliar taste or unpleasant smell</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Concerns about contamination or heavy metals in coastal seaweed</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>I don't know how to prepare or cook seaweed</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Cultural or social acceptance — "it is not a Nigerian food"</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>High price or limited availability in local markets</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Lack of regulatory approval or quality certification</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>I have no concerns about eating seaweed</div>
+          </div>
+          <div class="analysis-tag">Used in: barrier ranking · ranked frequency table · discussion (barriers to adoption)</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q19</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">Which attribute would be <strong>most important</strong> to you when deciding to incorporate seaweed into your diet?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is a motivator ranking question — the flip side of Q18. Where Q18 identifies what stops people, Q19 identifies what would pull them toward seaweed. Together they form a push-pull analysis that is a standard and well-regarded framework in food acceptance literature. The most selected motivator becomes your primary recommendation for seaweed product marketing in Nigeria.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Proven health benefits (scientific evidence)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Affordable price and easy availability</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>NAFDAC approval or quality certification</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Recommendation from a doctor or nutritionist</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Good taste and easy preparation</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Locally produced in Nigeria (supporting local economy)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Environmental sustainability / ocean-friendly sourcing</div>
+          </div>
+          <div class="analysis-tag">Used in: motivator ranking · push-pull analysis · discussion implications</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q20</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">What level of evidence would you need before regularly incorporating seaweed into your diet?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This probes the evidence threshold — how much scientific backing do Nigerian urban consumers require before adopting a new food? This is important for your discussion because it tells researchers and regulators whether public education campaigns or clinical endorsements would be more effective than simple product availability. It is a genuinely useful practical finding.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Published clinical or scientific research is needed</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Recommendation by a Nigerian health authority is sufficient</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>NAFDAC registration alone would be enough</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Positive reviews and testimonials from people I trust</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>I would try it with no special evidence needed</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>No amount of evidence would convince me</div>
+          </div>
+          <div class="analysis-tag">Used in: evidence threshold analysis · discussion (regulatory and communication strategy)</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q21</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">How concerned are you about the <strong>safety</strong> of seaweed harvested from Nigerian coastal waters (e.g., possible heavy metal contamination or pollution)?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Safety perception is a unique and locally relevant question — Nigerian coastal waters near Lagos have documented pollution concerns. This is the kind of context-specific question that distinguishes your paper from generic global consumer surveys. High safety concern would indicate a market-readiness barrier that requires quality assurance and testing protocols before commercial seaweed food products can succeed in Lagos. It feeds directly into your conclusion's policy implications.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Very concerned — coastal water quality in Nigeria worries me significantly</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Somewhat concerned — it is a factor I would consider</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Neutral — I have not thought about it</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Not very concerned — I trust proper processing would remove risks</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Not concerned at all</div>
+          </div>
+          <div class="analysis-tag">Used in: safety perception subscale · Nigeria-specific finding · policy implications</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION D -->
+    <div class="sec-card">
+      <div class="sec-head">
+        <div class="sec-letter">D</div>
+        <div>
+          <div class="sec-title">Section D — Dietary Acceptance &amp; Incorporation Willingness</div>
+          <div class="sec-desc">Q22–Q27 · Core dependent variable section · Skip logic on Q22</div>
+        </div>
+      </div>
+      <div class="sec-body">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q22</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required · Skip trigger</span></div>
+          <div class="q-text">If seaweed-based food products were <strong>readily available and affordably priced</strong> in Lagos markets, how willing would you be to incorporate them into your regular diet?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role — this is your primary dependent variable (H3)</div>
+            This is the single most analytically important question in the entire survey. The answer becomes your binary outcome variable in the logistic regression: willing (1) vs. not willing (0). Your Hypothesis 3 states that willingness to incorporate is predicted by education, income, health consciousness, coastal exposure, and neophobia score. Everything in Sections A, B, and C feeds into explaining variation in answers to this question. The conditional framing ("if readily available and affordable") removes price and availability as confounders so you are measuring attitude, not just logistics.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Very willing — I would actively seek seaweed-based foods</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Willing — I would try them if they were accessible</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Neutral — I might try once but would not commit regularly</div>
+            <div class="opt skip-opt"><div class="opt-ctrl radio"></div>Unwilling — I would prefer conventional food options → <strong>Skip to Q25</strong></div>
+            <div class="opt skip-opt"><div class="opt-ctrl radio"></div>Completely unwilling — I would not eat seaweed → <strong>Skip to Q25</strong></div>
+          </div>
+          <div class="analysis-tag">Used in: PRIMARY DEPENDENT VARIABLE · binary logistic regression outcome (H3) · acceptance rate %</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="skip-note">Shown only if Q22 = "Very willing", "Willing", or "Neutral"</div>
+          <div class="q-meta"><span class="q-num">Q23</span><span class="q-type-badge">Checkbox (multi-select)</span></div>
+          <div class="q-text">In which Nigerian food formats would you be most willing to consume seaweed? <strong>(Select all that apply)</strong></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is your most practically valuable question for industry and for your discussion. Identifying whether Lagos consumers prefer seaweed in familiar formats (egusi soup powder, dried seasoning, fortified garri) versus international formats (nori snacks, sushi) tells seaweed food startups exactly how to enter the Nigerian market. This is the kind of finding that gets cited by applied researchers and industry reports.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl check"></div>As a dried powder added to soups or stews (e.g., like crayfish powder)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>As a seasoning or flavouring ingredient</div>
+            <div class="opt"><div class="opt-ctrl check"></div>As a health supplement (capsules or tablets)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Fortified into staple foods (bread, garri, noodles)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>As packaged snacks (seaweed crisps or chips)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Fresh or rehydrated in salads</div>
+            <div class="opt"><div class="opt-ctrl check"></div>In smoothies or health drinks</div>
+            <div class="opt"><div class="opt-ctrl check"></div>In traditional Nigerian dishes (banga soup, egusi, etc.)</div>
+          </div>
+          <div class="analysis-tag">Used in: preferred format analysis · discussion (product development recommendations)</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="skip-note">Shown only if Q22 = "Very willing", "Willing", or "Neutral"</div>
+          <div class="q-meta"><span class="q-num">Q24</span><span class="q-type-badge">Multiple choice</span></div>
+          <div class="q-text">How much more (if anything) would you be willing to pay for a seaweed-based ingredient compared to a conventional equivalent?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            A compact price-premium question embedded in the acceptance section. Unlike the original microalgae survey's detailed contingent valuation brackets, this is simpler and appropriate for a food-incorporation study rather than a supplement market study. It gives you a quick premium acceptance metric without overwhelming respondents with hypothetical pricing, which is known to increase survey fatigue.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>I would only buy it if it were the same price or cheaper</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Up to 10% more</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>10–25% more</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>More than 25% more if health benefits are clearly proven</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Price does not matter to me if the product is good</div>
+          </div>
+          <div class="analysis-tag">Used in: price premium willingness · market viability discussion</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q25</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required · All respondents</span></div>
+          <div class="q-text">Would you recommend seaweed-based food products to family or friends if you found them safe, tasty, and affordable?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Recommendation intent is a proxy for social diffusion potential. In Nigerian food culture, new food items spread heavily through family and social networks. High recommendation intent even among non-consumers indicates that seaweed has social adoption potential beyond early adopters — a positive signal for the market and an interesting discussion point about behaviour change pathways.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Definitely yes</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Probably yes</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Uncertain</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Probably no</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Definitely no</div>
+          </div>
+          <div class="analysis-tag">Used in: social diffusion potential · recommendation rate % · discussion</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q26</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">Where would you prefer to buy seaweed-based food products?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Channel preference data is directly useful to anyone commercialising seaweed food products in Lagos. It also tells you whether the market is primarily modern trade (supermarket) or informal trade (open market) — a distinction with significant implications for pricing, packaging, and distribution strategy. This is one of those questions reviewers like because it has immediate applied value.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Supermarket (e.g., Shoprite, Spar, Justrite)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Pharmacy or health food store</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Online (Jumia, Konga, Instagram vendors)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Open market (e.g., Mile 12, Balogun market)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Directly from a local farm or producer</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>No preference</div>
+          </div>
+          <div class="analysis-tag">Used in: distribution channel preference · market entry recommendations</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q27</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">Do you think Nigerian universities and research institutions should invest more in developing locally produced seaweed food products?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This question adds a policy dimension. High agreement here (which is expected) gives you a strong closing sentence in your conclusion — that not only is there consumer readiness, but there is public support for scientific investment in seaweed food development. It is also personally relevant to your NIOMR affiliation and your long-term academic career direction. Include this result in your abstract's conclusion sentence.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Strongly yes — it is important for food security, nutrition, and the blue economy</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Yes — it could be beneficial</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Neutral</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>No — there are more important research priorities</div>
+          </div>
+          <div class="analysis-tag">Used in: policy support measure · conclusion statement · abstract closing sentence</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION E -->
+    <div class="sec-card">
+      <div class="sec-head">
+        <div class="sec-letter">E</div>
+        <div>
+          <div class="sec-title">Section E — Current Food Behaviour</div>
+          <div class="sec-desc">Q28–Q31 · Contextual purchasing behaviour</div>
+        </div>
+      </div>
+      <div class="sec-body">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q28</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">How often do you currently purchase functional or health food products (e.g., herbal supplements, fortified foods, protein powders, health teas)?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This establishes existing health-food purchasing behaviour as context for seaweed acceptance. A respondent who already buys health foods monthly is far more likely to accept seaweed products than someone who never purchases them. This variable can be used as a covariate in your regression to control for general health-food purchasing behaviour, making your seaweed-specific findings more precise.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Weekly or more</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Monthly</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Occasionally (every few months)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Rarely (once or twice a year)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Never</div>
+          </div>
+          <div class="analysis-tag">Used in: health-food behaviour covariate · regression control variable</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q29</span><span class="q-type-badge">Checkbox</span></div>
+          <div class="q-text">Which of the following seafood or ocean-derived ingredients do you currently use regularly in cooking? <strong>(Select all that apply)</strong></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This establishes ocean-food baseline. Respondents already using crayfish, dried fish, periwinkle, or stockfish are culturally accustomed to ocean-derived food ingredients — making them more likely to accept seaweed. You can construct a binary "ocean-food familiarity" variable and test whether it predicts seaweed acceptance. It is also a culturally specific question that makes your study unmistakably Nigerian in character.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl check"></div>Crayfish (dried)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Dried or smoked fish</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Periwinkle (isam)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Stockfish (okporoko)</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Fresh fish</div>
+            <div class="opt"><div class="opt-ctrl check"></div>Prawns or shrimp</div>
+            <div class="opt"><div class="opt-ctrl check"></div>None of the above</div>
+          </div>
+          <div class="analysis-tag">Used in: ocean-food familiarity index · Nigeria-specific predictor · cultural acceptance context</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q30</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">How do you primarily get information about new food or nutrition products?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Information channel data is critical for anyone planning a seaweed food awareness campaign in Nigeria. If social media dominates (likely for the 18–34 demographic), campaigns should be Instagram and TikTok-based. If healthcare professionals rank highly, then clinical nutrition endorsement is the key lever. This is a directly actionable finding that gives your discussion section clear, specific recommendations.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Social media (Instagram, TikTok, YouTube, Twitter/X)</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Healthcare professionals</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Health blogs or websites</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Television or radio</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Friends and family</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Product packaging or supermarket display</div>
+          </div>
+          <div class="analysis-tag">Used in: information channel analysis · campaign strategy recommendations</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q31</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">Overall, how open are you to incorporating new, scientifically-backed ocean-derived food ingredients into your diet over the next 12 months?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is your behavioural intention closing measure — framed more broadly than seaweed specifically to capture general openness to the blue food category. Comparing this to Q22 (seaweed-specific acceptance) tells you whether low seaweed acceptance is seaweed-specific or part of a broader reluctance toward novel ocean foods — an analytically useful distinction for your discussion.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Very open — I actively look for new nutritious food options</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Somewhat open — I would try with good reason</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Neutral</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Not very open</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Completely closed to novel food ingredients</div>
+          </div>
+          <div class="analysis-tag">Used in: general food openness measure · comparison with Q22 · blue food category analysis</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION F -->
+    <div class="sec-card">
+      <div class="sec-head">
+        <div class="sec-letter">F</div>
+        <div>
+          <div class="sec-title">Section F — Open Feedback &amp; Closing</div>
+          <div class="sec-desc">Q32–Q34 · Qualitative + overall attitudes · Final section</div>
+        </div>
+      </div>
+      <div class="sec-body">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q32</span><span class="q-type-badge">Multiple choice</span><span class="req-badge">Required</span></div>
+          <div class="q-text">If you were to try seaweed as a food ingredient for the first time, which of the following scenarios would make you most comfortable doing so?</div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            This is a behaviour-change scenario question — it identifies the trigger or entry point that would convert a non-consumer into a first-time trier. The answer is highly actionable: if "free sample at a market or event" dominates, it suggests sampling campaigns are the most effective strategy. If "prepared by a trusted cook or restaurant" dominates, it suggests chef-led introductions matter more. This finding is rarely seen in food science consumer surveys from Nigeria and would stand out to reviewers.
+          </div>
+          <div class="options">
+            <div class="opt"><div class="opt-ctrl radio"></div>Trying a free sample at a market, event, or supermarket</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Eating a dish prepared by a trusted cook or restaurant</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>A doctor or nutritionist recommending I try it</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Seeing a trusted friend or family member eat it regularly</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Reading a credible scientific article about its benefits</div>
+            <div class="opt"><div class="opt-ctrl radio"></div>Nothing — I would not try seaweed under any circumstances</div>
+          </div>
+          <div class="analysis-tag">Used in: first-adoption trigger analysis · market entry strategy recommendations</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q33</span><span class="q-type-badge">Likert — single item</span><span class="req-badge">Required</span></div>
+          <div class="q-text">Overall, how positive is your attitude toward seaweed becoming a mainstream food ingredient in Nigeria?<br><span style="font-size:12px;color:var(--ink-muted);">1 = Very negative · 3 = Neutral · 5 = Very positive</span></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            A single global attitude item serves as your overall summary measure — it captures the composite attitude in one score. You report the mean and standard deviation for this item prominently in your results, and use it in your abstract's results sentence. It also gives you a quick benchmark: if the mean is above 3.5, the headline finding is "urban Lagos consumers hold moderately positive attitudes toward seaweed as mainstream food."
+          </div>
+          <div class="likert-scroll">
+            <table class="likert">
+              <thead><tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Overall attitude toward seaweed as mainstream food in Nigeria</td>
+                  <td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td><td><div class="l-circle"></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="analysis-tag">Used in: overall attitude score · abstract results sentence · mean ± SD reported prominently</div>
+        </div>
+
+        <hr class="qdiv">
+
+        <div class="q-block">
+          <div class="q-meta"><span class="q-num">Q34</span><span class="q-type-badge">Paragraph (open text)</span></div>
+          <div class="q-text">Is there anything else you would like to share about your thoughts on seaweed as food, or any experience with seaweed you think is relevant to this study? <strong>(Optional)</strong></div>
+          <div class="rationale">
+            <div class="rationale-label">Puzzle role</div>
+            Open-ended responses serve two functions. First, they often surface themes you did not anticipate — a respondent mentioning that their grandmother used coastal seaweed medicinally, for instance, would be an unexpected and publishable finding about traditional knowledge. Second, vivid qualitative quotes can be used selectively in your discussion to humanise the data. Even 20–30 open responses give you enough for a brief thematic summary in the results.
+          </div>
+          <div class="fake-input tall">Your answer (optional)</div>
+        </div>
+
+        <div style="margin-top:28px;background:linear-gradient(135deg,var(--ocean),var(--ocean-mid));border-radius:10px;padding:20px 24px;color:#fff;">
+          <div style="font-family:'Fraunces',serif;font-size:17px;margin-bottom:8px;">Thank you for your participation.</div>
+          <div style="font-size:13px;color:rgba(168,213,190,0.85);line-height:1.7;">Your responses contribute to the first consumer survey on macroalgae food acceptance in Lagos, Nigeria. Results will be published in a peer-reviewed journal. If you have questions about this study, contact: <strong>[your.email@niomr.gov.ng]</strong></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     TAB 2 — PUZZLE MAP
+════════════════════════════════════ -->
+<div id="tab-puzzle" class="tab-panel">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">How every question fits together</div>
+      <h1>The Research <em>Puzzle Map</em></h1>
+      <div class="hero-meta">
+        <span>Each section feeds the next</span>
+        <span>3 hypotheses tested</span>
+        <span>1 regression model</span>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+
+    <div class="flow-diagram">
+      <h3>The Logic Chain — How sections connect</h3>
+      <div class="flow-chain">
+        <div class="flow-node fn-a"><strong>A</strong><br>Who are they?<br><small>Predictor variables</small></div>
+        <div class="flow-arrow-text">→</div>
+        <div class="flow-node fn-b"><strong>B</strong><br>Do they know seaweed?<br><small>Awareness + exposure</small></div>
+        <div class="flow-arrow-text">→</div>
+        <div class="flow-node fn-c"><strong>C</strong><br>What do they think?<br><small>Perception + neophobia</small></div>
+        <div class="flow-arrow-text">→</div>
+        <div class="flow-node fn-d"><strong>D</strong><br>Would they eat it?<br><small>Acceptance (outcome)</small></div>
+        <div class="flow-arrow-text">→</div>
+        <div class="flow-node fn-e"><strong>E</strong><br>Food behaviour context<br><small>Covariates</small></div>
+        <div class="flow-arrow-text">→</div>
+        <div class="flow-node fn-f"><strong>F</strong><br>Triggers + global attitude<br><small>Implications data</small></div>
+      </div>
+    </div>
+
+    <div class="puzzle-grid">
+      <div class="puzzle-piece pp-a">
+        <div class="pp-letter">A</div>
+        <div class="pp-title">Sociodemographics (Q1–Q8)</div>
+        <div class="pp-role">These are your <strong>independent variables</strong> — the things that explain differences in awareness and acceptance between respondents. Age, education, income, coastal proximity, and health consciousness are all predictor variables that go into your regression model. Without Section A, you cannot test any of your three hypotheses.</div>
+        <div class="pp-feeds"><strong>Feeds into:</strong> <span>H1 (education → awareness)</span> <span>H2 (coastal exposure → acceptance)</span> <span>H3 (multiple predictors → acceptance)</span></div>
+      </div>
+
+      <div class="puzzle-piece pp-b">
+        <div class="pp-letter">B</div>
+        <div class="pp-title">Awareness &amp; Encounter (Q9–Q15)</div>
+        <div class="pp-role">This section measures <strong>what respondents already know and have experienced</strong>. It gives you your headline awareness rate (% of Lagos consumers aware of seaweed as food), the depth of that awareness (species recognition, nutritional knowledge), and the pathway through which awareness arrived. The photo recognition block (Q12) is your methodological differentiator.</div>
+        <div class="pp-feeds"><strong>Feeds into:</strong> <span>H1 test (awareness %)</span> <span>awareness gap finding</span> <span>knowledge-consumption gap</span></div>
+      </div>
+
+      <div class="puzzle-piece pp-c">
+        <div class="pp-letter">C</div>
+        <div class="pp-title">Perception &amp; Neophobia (Q16–Q21)</div>
+        <div class="pp-role">This is the <strong>psychological core</strong> of the survey. The Likert items generate composite scores (perception score, neophobia score) that feed directly into the regression model as predictor variables. This is what distinguishes your study from a simple awareness poll — you are measuring the attitudinal mechanisms that drive or block acceptance. Safety concern (Q21) is Nigeria-specific and novel.</div>
+        <div class="pp-feeds"><strong>Feeds into:</strong> <span>regression predictors</span> <span>Cronbach's alpha</span> <span>barrier analysis</span> <span>H3</span></div>
+      </div>
+
+      <div class="puzzle-piece pp-d">
+        <div class="pp-letter">D</div>
+        <div class="pp-title">Acceptance &amp; Willingness (Q22–Q27)</div>
+        <div class="pp-role">This is your <strong>outcome section</strong> — everything else in the survey exists to explain variation in responses here. Q22 is your dependent variable in the logistic regression. Q23 (preferred food formats) and Q26 (channel preference) are your most practically useful findings. Q27 (policy support) gives you a strong closing statement for your conclusion.</div>
+        <div class="pp-feeds"><strong>Feeds into:</strong> <span>dependent variable (Q22)</span> <span>H3 test</span> <span>acceptance rate %</span> <span>market recommendations</span></div>
+      </div>
+
+      <div class="puzzle-piece pp-e">
+        <div class="pp-letter">E</div>
+        <div class="pp-title">Food Behaviour Context (Q28–Q31)</div>
+        <div class="pp-role">These questions provide <strong>behavioural covariates</strong> — context that makes your regression model more precise. Knowing a respondent already buys health foods monthly, or regularly cooks with crayfish and dried fish, controls for general food behaviour when you are trying to isolate seaweed-specific acceptance. Q29 (ocean-food familiarity) is a culturally specific Nigerian variable found in no other seaweed consumer study.</div>
+        <div class="pp-feeds"><strong>Feeds into:</strong> <span>regression covariates</span> <span>ocean-food familiarity index</span> <span>cultural context</span></div>
+      </div>
+
+      <div class="puzzle-piece pp-f">
+        <div class="pp-letter">F</div>
+        <div class="pp-title">Triggers &amp; Global Attitude (Q32–Q34)</div>
+        <div class="pp-role">This closing section captures <strong>implications data</strong> — findings that translate directly into recommendations. Q32 (adoption trigger) tells you how to convert non-consumers. Q33 (global attitude score) gives you an abstract-ready headline number. Q34 (open text) surfaces unexpected insights. These questions do not feed the regression — they feed the discussion and conclusion sections of the paper.</div>
+        <div class="pp-feeds"><strong>Feeds into:</strong> <span>abstract result sentence</span> <span>discussion implications</span> <span>conclusion recommendations</span></div>
+      </div>
+    </div>
+
+    <!-- Hypothesis map -->
+    <div class="sec-card">
+      <div class="sec-head">
+        <div class="sec-letter" style="font-size:13px;">H</div>
+        <div><div class="sec-title">How the 3 Hypotheses Map to Questions</div></div>
+      </div>
+      <div class="sec-body">
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          <div style="background:var(--sand);border-radius:10px;padding:18px;">
+            <div style="font-size:12px;font-weight:600;color:var(--ocean-bright);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Hypothesis 1</div>
+            <div style="font-size:14.5px;font-weight:500;color:var(--ink);margin-bottom:10px;">Education level is significantly associated with awareness of seaweed as a food ingredient.</div>
+            <div style="font-size:13px;color:var(--ink-soft);">
+              <strong>Independent variable:</strong> Q3 (education) · <strong>Dependent variable:</strong> Q9 (awareness) · <strong>Test:</strong> Chi-square · <strong>Sections used:</strong> A + B
+            </div>
+          </div>
+          <div style="background:var(--sand);border-radius:10px;padding:18px;">
+            <div style="font-size:12px;font-weight:600;color:var(--ocean-bright);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Hypothesis 2</div>
+            <div style="font-size:14.5px;font-weight:500;color:var(--ink);margin-bottom:10px;">Respondents with prior coastal exposure show significantly higher willingness to incorporate seaweed into their diet.</div>
+            <div style="font-size:13px;color:var(--ink-soft);">
+              <strong>Independent variable:</strong> Q7 (coastal exposure) · <strong>Dependent variable:</strong> Q22 (acceptance) · <strong>Test:</strong> Chi-square + logistic regression · <strong>Sections used:</strong> A + D
+            </div>
+          </div>
+          <div style="background:var(--sand);border-radius:10px;padding:18px;">
+            <div style="font-size:12px;font-weight:600;color:var(--ocean-bright);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;">Hypothesis 3</div>
+            <div style="font-size:14.5px;font-weight:500;color:var(--ink);margin-bottom:10px;">Willingness to incorporate seaweed is significantly predicted by education, income, health consciousness, coastal exposure, perception score, and food neophobia score.</div>
+            <div style="font-size:13px;color:var(--ink-soft);">
+              <strong>Predictors:</strong> Q3, Q5, Q8, Q7, Q16 composite, Q17 composite · <strong>Outcome:</strong> Q22 (binary) · <strong>Test:</strong> Binary logistic regression · <strong>Sections used:</strong> A + C + D
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════
+     TAB 3 — MANUSCRIPT
+════════════════════════════════════ -->
+<div id="tab-manuscript" class="tab-panel">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Publication Roadmap</div>
+      <h1>Manuscript Structure &amp; <em>Writing Guide</em></h1>
+      <div class="hero-meta">
+        <span>IMRAD format</span>
+        <span>~6,000 words target</span>
+        <span>5 tables · 1–2 figures</span>
+        <span>30–45 references</span>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="stat-val">8</div><div class="stat-key">Manuscript sections</div></div>
+      <div class="stat-cell"><div class="stat-val">~6k</div><div class="stat-key">Target words</div></div>
+      <div class="stat-cell"><div class="stat-val">5</div><div class="stat-key">Tables needed</div></div>
+      <div class="stat-cell"><div class="stat-val">Foods</div><div class="stat-key">First submission target</div></div>
+    </div>
+
+    <div class="ms-card">
+      <div class="ms-head" onclick="toggleMs(this)">
+        <div class="ms-head-left"><div class="ms-badge">T</div><div class="ms-title">Title, Authors &amp; Keywords</div></div>
+        <div class="ms-right"><span class="ms-wc">250 words (abstract)</span><span class="ms-chevron">▼</span></div>
+      </div>
+      <div class="ms-body">
+        <div class="ms-sub">Full title</div>
+        <div class="ms-p" style="font-style:italic;">"Consumer Awareness, Perception, and Dietary Acceptance of Macroalgae (Seaweed) as a Food Ingredient Among Urban Residents in Lagos, Nigeria: A Cross-Sectional Survey"</div>
+        <div class="ms-sub">Keywords (6–8)</div>
+        <div class="ms-p">macroalgae; seaweed food; consumer acceptance; food neophobia; Nigeria; Lagos; blue food; coastal communities</div>
+        <div class="ms-sub">Structured abstract (250 words max)</div>
+        <div class="ms-bullet"><strong>Background:</strong> Global interest in seaweed as a sustainable food source — but no consumer data exists for urban Nigeria.</div>
+        <div class="ms-bullet"><strong>Objective:</strong> To assess awareness, perception, and dietary acceptance of macroalgae as food among urban Lagos consumers.</div>
+        <div class="ms-bullet"><strong>Methods:</strong> Cross-sectional online survey; n=[X]; Google Forms; purposive/snowball sampling; binary logistic regression.</div>
+        <div class="ms-bullet"><strong>Results:</strong> [X]% were aware; [X]% willing to incorporate; education and health consciousness were significant predictors.</div>
+        <div class="ms-bullet"><strong>Conclusion:</strong> Moderate consumer readiness exists; targeted education and affordable product formats are key enablers.</div>
+      </div>
+    </div>
+
+    <div class="ms-card">
+      <div class="ms-head" onclick="toggleMs(this)">
+        <div class="ms-head-left"><div class="ms-badge">1</div><div class="ms-title">Introduction</div></div>
+        <div class="ms-right"><span class="ms-wc">700–900 words</span><span class="ms-chevron">▼</span></div>
+      </div>
+      <div class="ms-body">
+        <div class="ms-sub">Paragraph 1 — Global context</div>
+        <div class="ms-p">Open with the global rise of seaweed as a food source — FAO projections on blue food, seaweed aquaculture growth, and demand from health-conscious consumers in Asia, Europe, and North America. Cite 3–4 recent papers.</div>
+        <div class="ms-sub">Paragraph 2 — Nutritional and scientific rationale</div>
+        <div class="ms-p">Summarise the nutritional profile of macroalgae: iodine, dietary fibre, minerals, bioactive polysaccharides, antioxidants. Brief mention of key species (Sargassum, Ulva, Gracilaria) relevant to West Africa. Keep citations tight — this is not a review paper.</div>
+        <div class="ms-sub">Paragraph 3 — West Africa and Nigeria gap</div>
+        <div class="ms-p">Establish the research gap explicitly. West Africa has significant macroalgae biodiversity (cite WASSD or related papers), yet consumer studies on seaweed as food in the region are virtually absent from the literature. The Lagos context — population size, coastal proximity, growing health-food market — makes it the ideal study setting.</div>
+        <div class="ms-sub">Paragraph 4 — Food neophobia rationale</div>
+        <div class="ms-p">Briefly introduce food neophobia as a psychological barrier to novel food acceptance. Note it has been applied to insects, novel proteins, and fermented foods but not seaweed in a Nigerian context — this is your methodological contribution.</div>
+        <div class="ms-sub">Paragraph 5 — Aims and objectives</div>
+        <div class="ms-p">State the three objectives clearly, each as one sentence, directly matching your three hypotheses. End with one sentence on the study's contribution.</div>
+        <div class="ms-tip">Do not write a literature review inside your introduction. Keep it to 5 tight paragraphs. Reviewers can tell when an introduction is padded.</div>
+      </div>
+    </div>
+
+    <div class="ms-card">
+      <div class="ms-head" onclick="toggleMs(this)">
+        <div class="ms-head-left"><div class="ms-badge">2</div><div class="ms-title">Materials &amp; Methods</div></div>
+        <div class="ms-right"><span class="ms-wc">900–1,100 words</span><span class="ms-chevron">▼</span></div>
+      </div>
+      <div class="ms-body">
+        <div class="ms-sub">2.1 Study design</div>
+        <div class="ms-p">Cross-sectional descriptive survey. Justify this design: suitable for capturing population-level attitudes at a single point in time with no intervention required.</div>
+        <div class="ms-sub">2.2 Study area and population</div>
+        <div class="ms-p">Lagos metropolitan area. Justify Lagos as the study setting — largest urban population in Nigeria (~15 million), strong health-food consumer market, proximity to the Atlantic coast making it directly relevant to seaweed food potential.</div>
+        <div class="ms-sub">2.3 Sampling</div>
+        <div class="ms-p">Purposive and snowball sampling via online channels (WhatsApp, Twitter/X, LinkedIn). Eligibility: adults ≥18, resident in Lagos, with internet access. Acknowledge the sampling bias this creates (educated, digitally active respondents) and frame it as a study limitation upfront.</div>
+        <div class="ms-sub">2.4 Sample size</div>
+        <div class="ms-p">Apply Cochran's formula: n = Z²pq/e² = (1.96)²(0.5)(0.5)/(0.05)² = 384. State minimum target of 250 complete valid responses, consistent with similar consumer studies in sub-Saharan Africa (cite 2 examples).</div>
+        <div class="ms-sub">2.5 Instrument development</div>
+        <div class="ms-p">34-item questionnaire across 6 sections. Likert items adapted from validated instruments (cite Food Neophobia Scale — Pliner &amp; Hobden, 1992; and a food perception scale). Pilot tested with n=30; Cronbach's α = [value] for Q16 subscale, [value] for Q17 subscale.</div>
+        <div class="ms-sub">2.6 Data collection</div>
+        <div class="ms-p">Google Forms distributed [Month Year] to [Month Year]. Anonymous, voluntary, no incentive.</div>
+        <div class="ms-sub">2.7 Analysis</div>
+        <div class="ms-p">Frequencies, percentages, means, SD. Chi-square for H1 and H2. Binary logistic regression for H3 (Q22 as outcome). Cronbach's α for internal consistency. JASP v0.18 (free and citable) or SPSS v27. p &lt; 0.05.</div>
+        <div class="ms-sub">2.8 Ethics</div>
+        <div class="ms-p">Informed consent obtained digitally. No personal data collected. Conducted in accordance with the Declaration of Helsinki.</div>
+      </div>
+    </div>
+
+    <div class="ms-card">
+      <div class="ms-head" onclick="toggleMs(this)">
+        <div class="ms-head-left"><div class="ms-badge">3</div><div class="ms-title">Results</div></div>
+        <div class="ms-right"><span class="ms-wc">1,200–1,500 words</span><span class="ms-chevron">▼</span></div>
+      </div>
+      <div class="ms-body">
+        <div class="ms-sub">3.1 Sample profile (Table 1)</div>
+        <div class="ms-p">Frequencies and percentages for all Section A variables. Highlight 2–3 dominant characteristics in-text. Do not repeat the whole table — just call attention to key features.</div>
+        <div class="ms-sub">3.2 Awareness and dietary exposure (Table 2)</div>
+        <div class="ms-p">Report overall awareness rate (Q9 %). Photo recognition scores (Q12 — mean out of 4). Nutritional knowledge (Q15 %). Consumption rate (Q13 %). Report the awareness-to-consumption gap as a percentage — this is a strong headline finding.</div>
+        <div class="ms-sub">3.3 Perception and food neophobia (Table 3)</div>
+        <div class="ms-p">Mean ± SD for each Likert item in Q16 and Q17. Composite scores and Cronbach's α. Frequency table for Q18 (primary concern) and Q19 (key motivator).</div>
+        <div class="ms-sub">3.4 Dietary acceptance (Table 4)</div>
+        <div class="ms-p">Overall acceptance rate (Q22 %). Preferred food formats (Q23 — ranked by frequency). Price premium willingness (Q24). Recommendation intent (Q25). Overall attitude score Q33 mean ± SD.</div>
+        <div class="ms-sub">3.5 Chi-square results</div>
+        <div class="ms-p">Report χ², df, p for: education × awareness (H1); coastal exposure × acceptance (H2); health consciousness × acceptance. State which hypotheses are supported.</div>
+        <div class="ms-sub">3.6 Binary logistic regression (Table 5)</div>
+        <div class="ms-p">Model with Q22 as outcome. Report OR, 95% CI, p for each predictor. Nagelkerke R². Hosmer-Lemeshow test. State which predictors significantly predicted acceptance and in which direction — this is your H3 test.</div>
+      </div>
+    </div>
+
+    <div class="ms-card">
+      <div class="ms-head" onclick="toggleMs(this)">
+        <div class="ms-head-left"><div class="ms-badge">4</div><div class="ms-title">Discussion</div></div>
+        <div class="ms-right"><span class="ms-wc">1,400–1,700 words</span><span class="ms-chevron">▼</span></div>
+      </div>
+      <div class="ms-body">
+        <div class="ms-sub">Opening — headline finding</div>
+        <div class="ms-p">State the single most important finding in plain language. Immediately begin comparing it to literature — not summarising results again.</div>
+        <div class="ms-sub">Awareness discussion</div>
+        <div class="ms-p">Compare your awareness rate to similar studies in Ghana, South Africa, or Asian developing countries. Discuss information pathways — why social media dominates over healthcare channels. Discuss the awareness-to-consumption gap and what maintains it.</div>
+        <div class="ms-sub">Perception and neophobia</div>
+        <div class="ms-p">Interpret the perception composite score. Discuss safety concern (Q21) in the specific context of Lagos coastal water quality — this is your Nigeria-specific contribution that no global study captures. Contextualise neophobia scores against published FNS data from other populations.</div>
+        <div class="ms-sub">Acceptance predictors</div>
+        <div class="ms-p">Interpret the regression. Discuss each significant predictor's effect size and practical meaning. If coastal exposure (Q7) predicts acceptance — explain the mechanism (familiarity, cultural normalisation). If neophobia predicts non-acceptance — this is a novel finding worth highlighting.</div>
+        <div class="ms-sub">Preferred formats — practical insight</div>
+        <div class="ms-p">Discuss which food formats Lagos consumers prefer. Frame this as a market entry recommendation. If soup powder or seasoning dominates, argue that integrating seaweed into familiar Nigerian cooking formats (not sushi) is the right product strategy.</div>
+        <div class="ms-sub">Limitations</div>
+        <div class="ms-p">Online convenience sampling, educated respondent bias, cross-sectional design, single-city scope, hypothetical (not actual) acceptance. Each limitation in one sentence with what it means for interpretation.</div>
+        <div class="ms-tip">The discussion should feel like a conversation with the literature, not a summary of your results. Every paragraph should cite at least one external paper for comparison.</div>
+      </div>
+    </div>
+
+    <div class="ms-card">
+      <div class="ms-head" onclick="toggleMs(this)">
+        <div class="ms-head-left"><div class="ms-badge">5</div><div class="ms-title">Conclusion</div></div>
+        <div class="ms-right"><span class="ms-wc">200–300 words</span><span class="ms-chevron">▼</span></div>
+      </div>
+      <div class="ms-body">
+        <div class="ms-p">Three paragraphs only. First: restate what the study found without numbers — the narrative headline. Second: the most important practical implication, framed for industry, researchers, or policy actors. Third: one sentence on the need for follow-up studies (experimental tasting studies, multi-city surveys, economic feasibility of seaweed food production in Nigeria).</div>
+        <div class="ms-tip">Your conclusion's final sentence should be quotable — something a reader could lift and cite. Example: "This study provides the first evidence-based consumer baseline for macroalgae food acceptance in Nigeria, establishing the groundwork for targeted product development and public health nutrition campaigns in the West African blue food sector."</div>
+      </div>
+    </div>
+
+    <div class="ms-card">
+      <div class="ms-head" onclick="toggleMs(this)">
+        <div class="ms-head-left"><div class="ms-badge">+</div><div class="ms-title">Journal Targets &amp; Submission Strategy</div></div>
+        <div class="ms-right"><span class="ms-chevron">▼</span></div>
+      </div>
+      <div class="ms-body">
+        <div class="ms-sub">First choice — Foods (MDPI)</div>
+        <div class="ms-p">Open access, Scopus + Web of Science indexed, IF ~5.2. Publishes consumer perception and novel food acceptance surveys regularly. Fast turnaround (~6–8 weeks). Highly receptive to developing-country context papers. Submit here first.</div>
+        <div class="ms-sub">Second choice — Food Quality &amp; Preference (Elsevier)</div>
+        <div class="ms-p">The premier journal for consumer food behaviour research. Your food neophobia angle fits perfectly with this journal's scope. More competitive but the methodological sophistication of your regression model makes it viable.</div>
+        <div class="ms-sub">Third choice — Algal Research (Elsevier)</div>
+        <div class="ms-p">Strong fit given the macroalgae focus. The journal publishes applied socioeconomic and consumer studies alongside lab science. Your NIOMR affiliation and WASSD connection are directly relevant here.</div>
+        <div class="ms-sub">Backup — Heliyon (Elsevier)</div>
+        <div class="ms-p">Broad open-access journal, peer-reviewed and indexed. Lower barrier. Use only if first three reject.</div>
+        <div class="ms-sub">Conference target</div>
+        <div class="ms-p">IOCMSE 2026 — submit a separate abstract on the consumer survey results alongside your WASSD abstract. Two submissions from related work at the same conference significantly raises your profile.</div>
+        <div class="ms-tip">Submit to one journal at a time. Use each rejection's reviewer comments to strengthen the paper before the next submission. A paper that goes Foods → Food Quality &amp; Preference → Algal Research with iterative revision will almost always find a home by the third attempt.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleMs(header) {
+  const body = header.nextElementSibling;
+  const chev = header.querySelector('.ms-chevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+</script>
+</body>
+</html>
