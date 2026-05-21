@@ -3,565 +3,1060 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Microalgae as Food — Quick Survey · NIOMR</title>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<title>Microalgae Consumer Survey · UNILAG</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --teal:     #0d6e6e;
-  --teal-2:   #0a5252;
-  --mint:     #4ecdc4;
-  --glow:     #a8f0eb;
-  --cream:    #f8f6f1;
-  --cream-2:  #eeebe3;
-  --ink:      #111a19;
-  --ink-2:    #2c4040;
-  --ink-3:    #6b8c8a;
-  --card:     #ffffff;
-  --border:   #d4e8e6;
-  --warn:     #c0522a;
-  --warn-bg:  #fdf2ed;
+  --navy:     #0e1f3d;
+  --navy-2:   #162d54;
+  --blue:     #1a56c4;
+  --sky:      #4d9de0;
+  --glow:     #a8d4f5;
+  --cream:    #f7f5f0;
+  --cream-2:  #ede9e1;
+  --ink:      #0e1520;
+  --ink-2:    #253348;
+  --ink-3:    #6b7f96;
+  --white:    #ffffff;
+  --border:   #d5dfe8;
+  --border-2: #b8cad8;
+  --green:    #1a7a4a;
+  --green-bg: #edf7f2;
+  --warn:     #b84040;
+  --warn-bg:  #fdf0f0;
   --r:        12px;
-  --shadow:   0 4px 28px rgba(13,110,110,0.10);
+  --sh:       0 2px 24px rgba(14,31,61,0.09);
+  --sh-lg:    0 8px 48px rgba(14,31,61,0.15);
 }
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
-body{
-  font-family:'Sora',sans-serif;
-  background:var(--cream);
-  color:var(--ink);
-  font-size:15px;
-  line-height:1.6;
-  min-height:100vh;
-}
-
-/* background blobs */
-body::before,body::after{
-  content:'';
-  position:fixed;
-  border-radius:50%;
-  pointer-events:none;
-  z-index:0;
-}
-body::before{
-  width:500px;height:500px;
-  top:-120px;right:-120px;
-  background:radial-gradient(circle,rgba(78,205,196,0.12) 0%,transparent 70%);
-}
-body::after{
-  width:400px;height:400px;
-  bottom:-80px;left:-80px;
-  background:radial-gradient(circle,rgba(13,110,110,0.08) 0%,transparent 70%);
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* progress */
-.prog-wrap{
-  position:fixed;top:0;left:0;right:0;
-  height:3px;background:var(--border);z-index:100;
-}
-.prog-fill{
-  height:100%;
-  background:linear-gradient(90deg,var(--teal),var(--mint));
-  width:0%;
-  transition:width .5s ease;
-  border-radius:0 3px 3px 0;
-}
-
-/* step badge */
-.step-badge{
-  position:fixed;top:14px;right:16px;
-  font-size:11.5px;font-weight:500;
-  color:var(--teal);
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:4px 14px;
-  z-index:99;
-  box-shadow:var(--shadow);
-  display:none;
+/* Subtle grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26,86,196,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26,86,196,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* wrapper */
-.wrap{
-  position:relative;z-index:1;
-  min-height:100vh;
-  display:flex;align-items:flex-start;justify-content:center;
-  padding:40px 16px 72px;
+/* Glow blobs */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(60px);
+}
+.blob-1 {
+  width: 500px; height: 500px;
+  top: -100px; right: -100px;
+  background: rgba(77,157,224,0.1);
+}
+.blob-2 {
+  width: 350px; height: 350px;
+  bottom: -80px; left: -80px;
+  background: rgba(26,86,196,0.08);
 }
 
-.shell{width:100%;max-width:600px;}
-
-/* screens */
-.screen{display:none;animation:up .4s cubic-bezier(.22,1,.36,1) both;}
-.screen.active{display:block;}
-@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-
-/* ── WELCOME ── */
-.welcome{
-  background:var(--teal-2);
-  border-radius:22px;
-  padding:52px 40px 44px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-  box-shadow:var(--shadow);
+/* Progress bar */
+.prog {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(14,31,61,0.08);
+  z-index: 200;
 }
-.welcome::before{
-  content:'';
-  position:absolute;
-  top:-80px;left:50%;transform:translateX(-50%);
-  width:320px;height:320px;border-radius:50%;
-  background:rgba(78,205,196,0.1);
-  pointer-events:none;
-}
-.w-icon{font-size:54px;margin-bottom:20px;display:block;position:relative;}
-.w-eyebrow{
-  font-size:10.5px;font-weight:600;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--mint);margin-bottom:14px;
-}
-.welcome h1{
-  font-family:'Lora',serif;
-  font-size:clamp(24px,5vw,34px);
-  font-weight:400;color:#fff;
-  line-height:1.22;margin-bottom:18px;
-  position:relative;
-}
-.welcome h1 em{font-style:italic;color:var(--glow);}
-.w-pills{
-  display:flex;justify-content:center;gap:16px;
-  flex-wrap:wrap;margin-bottom:28px;position:relative;
-}
-.w-pill{
-  font-size:12px;color:rgba(168,240,235,0.75);
-  display:flex;align-items:center;gap:6px;
-}
-.w-pill::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--mint);flex-shrink:0;}
-.consent-note{
-  background:rgba(255,255,255,0.07);
-  border:1px solid rgba(78,205,196,0.2);
-  border-radius:10px;
-  padding:14px 18px;
-  font-size:12.5px;color:rgba(168,240,235,0.7);
-  line-height:1.65;text-align:left;margin-bottom:26px;position:relative;
-}
-.btn-start{
-  display:inline-flex;align-items:center;gap:10px;
-  background:var(--mint);color:var(--teal-2);
-  font-family:'Sora',sans-serif;font-size:15px;font-weight:600;
-  border:none;border-radius:50px;padding:14px 34px;
-  cursor:pointer;transition:all .2s;position:relative;
-}
-.btn-start:hover{background:var(--glow);transform:translateY(-1px);box-shadow:0 8px 28px rgba(78,205,196,0.4);}
-
-/* ── QUESTION CARD ── */
-.qcard{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:32px 30px 28px;
-  box-shadow:var(--shadow);
+.prog-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue), var(--sky));
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  border-radius: 0 3px 3px 0;
+  box-shadow: 0 0 8px rgba(77,157,224,0.5);
 }
 
-.sec-tag{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--teal);background:rgba(13,110,110,0.08);
-  border:1px solid rgba(13,110,110,0.14);
-  border-radius:20px;padding:3px 11px;margin-bottom:18px;
+/* Step pill */
+.step-pill {
+  position: fixed;
+  top: 14px; right: 16px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--blue);
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 14px;
+  z-index: 199;
+  box-shadow: var(--sh);
+  display: none;
+  letter-spacing: .02em;
 }
 
-.qcard h2{
-  font-family:'Lora',serif;
-  font-size:clamp(17px,3vw,21px);
-  font-weight:400;color:var(--ink);
-  line-height:1.35;margin-bottom:6px;
+/* Wrapper */
+.wrap {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 44px 16px 80px;
 }
-.qcard h2 em{font-style:italic;color:var(--teal);}
+.shell { width: 100%; max-width: 620px; }
 
-.q-hint{font-size:12.5px;color:var(--ink-3);margin-bottom:20px;line-height:1.5;}
+/* Screens */
+.screen { display: none; animation: rise .45s cubic-bezier(.22,1,.36,1) both; }
+.screen.active { display: block; }
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-/* group label inside card */
-.g-label{
-  font-size:12px;font-weight:600;color:var(--ink-2);
-  letter-spacing:.04em;text-transform:uppercase;
-  margin:22px 0 10px;
-  padding-bottom:6px;
-  border-bottom:1px solid var(--cream-2);
+/* ══════════════════════════════
+   WELCOME CARD
+══════════════════════════════ */
+.welcome {
+  background: var(--navy);
+  border-radius: 22px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--sh-lg);
+  position: relative;
 }
-.g-label:first-child{margin-top:0;}
 
-/* ── RADIO / CHECK ── */
-.opts{display:flex;flex-direction:column;gap:7px;}
-.opt{
-  display:flex;align-items:flex-start;gap:11px;
-  padding:11px 14px;
-  border:1.5px solid var(--border);
-  border-radius:9px;
-  cursor:pointer;
-  font-size:13.5px;color:var(--ink-2);
-  line-height:1.4;
-  transition:all .15s;
-  user-select:none;
+.welcome-top {
+  padding: 48px 44px 36px;
+  position: relative;
 }
-.opt:hover{border-color:var(--teal);background:rgba(13,110,110,0.03);}
-.opt input{display:none;}
-.opt:has(input:checked){
-  border-color:var(--teal);
-  background:rgba(13,110,110,0.05);
+
+/* decorative corner arc */
+.welcome-top::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  border: 1px solid rgba(77,157,224,0.15);
+  pointer-events: none;
 }
-.ctrl{
-  width:19px;height:19px;
-  border:2px solid var(--border);
-  flex-shrink:0;margin-top:1px;
-  transition:all .15s;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;
+.welcome-top::after {
+  content: '';
+  position: absolute;
+  top: -20px; right: -20px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 1px solid rgba(77,157,224,0.1);
+  pointer-events: none;
 }
-.ctrl.r{border-radius:50%;}
-.ctrl.s{border-radius:5px;}
-.ctrl::after{
-  content:'';
-  position:absolute;
-  opacity:0;transform:scale(0.4);
-  transition:all .15s;
+
+.inst-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
 }
-.ctrl.r::after{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--card);
+.inst-logo {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: rgba(77,157,224,0.15);
+  border: 1px solid rgba(77,157,224,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
 }
-.ctrl.s::after{
-  content:'✓';font-size:11px;color:#fff;
-  transform:scale(0.4);
+.inst-text { font-size: 12px; color: rgba(168,212,245,0.7); line-height: 1.3; }
+.inst-text strong { display: block; color: var(--glow); font-weight: 500; font-size: 12.5px; }
+
+.welcome h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 5vw, 34px);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.22;
+  margin-bottom: 18px;
 }
-.opt:has(input[type=radio]:checked) .ctrl.r{background:var(--teal);border-color:var(--teal);}
-.opt:has(input[type=radio]:checked) .ctrl.r::after{opacity:1;transform:scale(1);}
-.opt:has(input[type=checkbox]:checked) .ctrl.s{background:var(--teal);border-color:var(--teal);}
-.opt:has(input[type=checkbox]:checked) .ctrl.s::after{opacity:1;transform:scale(1);}
+.welcome h1 em {
+  font-style: italic;
+  color: var(--glow);
+}
+
+.meta-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.meta-pill {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(168,212,245,0.8);
+  background: rgba(77,157,224,0.1);
+  border: 1px solid rgba(77,157,224,0.2);
+  border-radius: 20px;
+  padding: 4px 13px;
+}
+
+/* Consent box */
+.consent {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(77,157,224,0.18);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  font-size: 13px;
+  color: rgba(200,220,240,0.75);
+  line-height: 1.75;
+}
+.consent strong { color: rgba(168,212,245,0.9); font-weight: 500; }
+
+/* Supervisor line */
+.supervisor {
+  padding: 16px 44px;
+  background: rgba(255,255,255,0.04);
+  border-top: 1px solid rgba(77,157,224,0.12);
+  font-size: 12px;
+  color: rgba(168,212,245,0.55);
+  line-height: 1.5;
+}
+.supervisor strong { color: rgba(168,212,245,0.8); font-weight: 500; }
+
+/* CTA area */
+.welcome-cta {
+  padding: 24px 44px 40px;
+}
+.btn-agree {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--sky);
+  color: var(--navy);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 32px;
+  cursor: pointer;
+  transition: all .2s;
+  letter-spacing: .01em;
+}
+.btn-agree:hover {
+  background: var(--glow);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(77,157,224,0.4);
+}
+.btn-agree svg { width: 17px; height: 17px; }
+
+.decline-note {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 12px;
+  color: rgba(168,212,245,0.4);
+}
+
+/* ══════════════════════════════
+   QUESTION CARD
+══════════════════════════════ */
+.qcard {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 34px 32px 30px;
+  box-shadow: var(--sh);
+}
+
+/* Section header inside card */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--cream-2);
+  margin-bottom: 26px;
+}
+.card-icon {
+  width: 38px; height: 38px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.ci-blue { background: rgba(26,86,196,0.08); }
+.ci-teal { background: rgba(26,122,74,0.08); }
+.ci-gold { background: rgba(180,130,20,0.08); }
+
+.card-title { font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.card-sub { font-size: 11.5px; color: var(--ink-3); margin-top: 1px; }
+
+/* Group label */
+.g-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin: 24px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.g-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cream-2);
+}
+.g-label:first-child { margin-top: 0; }
+
+/* Two-column grid for demographics */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.col-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: 8px;
+}
+
+/* Options */
+.opts { display: flex; flex-direction: column; gap: 6px; }
+
+.opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.4;
+  transition: all .15s;
+  user-select: none;
+}
+.opt:hover { border-color: var(--blue); background: rgba(26,86,196,0.03); }
+.opt input { display: none; }
+.opt:has(input:checked) {
+  border-color: var(--blue);
+  background: rgba(26,86,196,0.05);
+}
+
+.ctrl {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border-2);
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all .15s;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.ctrl.r { border-radius: 50%; }
+.ctrl.s { border-radius: 4px; }
+
+/* radio fill */
+.opt:has(input[type=radio]:checked) .ctrl.r {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.opt:has(input[type=radio]:checked) .ctrl.r::after {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* checkbox fill */
+.opt:has(input[type=checkbox]:checked) .ctrl.s {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.opt:has(input[type=checkbox]:checked) .ctrl.s::after {
+  content: '✓';
+  font-size: 11px;
+  color: #fff;
+  line-height: 1;
+}
+
+.opt-text { flex: 1; }
+
+/* Inline question label */
+.q-label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: 9px;
+  line-height: 1.45;
+}
+.q-label .sub {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-3);
+  display: block;
+  margin-top: 2px;
+}
 
 /* ── LIKERT ── */
-.likert-row{margin-bottom:18px;}
-.l-stmt{font-size:13.5px;color:var(--ink-2);margin-bottom:9px;line-height:1.45;}
-.l-scale{display:flex;gap:5px;}
-.l-btn{
-  flex:1;height:38px;
-  border-radius:8px;
-  border:1.5px solid var(--border);
-  background:var(--cream);
-  font-family:'Sora',sans-serif;
-  font-size:13px;font-weight:500;color:var(--ink-3);
-  cursor:pointer;transition:all .15s;
+.likert-block { margin-bottom: 16px; }
+.l-stmt {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  margin-bottom: 9px;
+  line-height: 1.45;
+  padding-left: 2px;
 }
-.l-btn:hover{border-color:var(--teal);color:var(--teal);}
-.l-btn.on{border-color:var(--teal);background:var(--teal);color:#fff;}
-.l-ends{display:flex;justify-content:space-between;font-size:10px;color:var(--ink-3);margin-top:4px;padding:0 2px;}
-.l-divider{border:none;border-top:1px dashed var(--cream-2);margin:16px 0;}
+.l-scale {
+  display: flex;
+  gap: 5px;
+}
+.l-btn {
+  flex: 1;
+  height: 40px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--cream);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.l-btn:hover { border-color: var(--blue); color: var(--blue); background: rgba(26,86,196,0.04); }
+.l-btn.on { border-color: var(--blue); background: var(--blue); color: #fff; }
+.l-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--ink-3);
+  margin-top: 4px;
+  padding: 0 2px;
+}
+.l-divider { border: none; border-top: 1px dashed var(--cream-2); margin: 14px 0; }
 
 /* ── TEXTAREA ── */
-textarea{
-  width:100%;
-  border:1.5px solid var(--border);
-  border-radius:9px;
-  padding:12px 14px;
-  font-family:'Sora',sans-serif;
-  font-size:13.5px;color:var(--ink);
-  background:var(--cream);
-  min-height:80px;resize:vertical;
-  outline:none;transition:border-color .15s;line-height:1.6;
+textarea {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  padding: 12px 14px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  color: var(--ink);
+  background: var(--cream);
+  min-height: 86px;
+  resize: vertical;
+  outline: none;
+  transition: border-color .15s;
+  line-height: 1.6;
 }
-textarea:focus{border-color:var(--teal);background:#fff;}
-textarea::placeholder{color:var(--ink-3);}
+textarea:focus { border-color: var(--blue); background: #fff; }
+textarea::placeholder { color: var(--ink-3); }
 
 /* ── ERROR ── */
-.err{
-  display:none;font-size:12px;color:var(--warn);
-  background:var(--warn-bg);
-  border:1px solid rgba(192,82,42,0.2);
-  border-radius:6px;padding:7px 12px;margin-top:10px;
+.err {
+  display: none;
+  font-size: 12.5px;
+  color: var(--warn);
+  background: var(--warn-bg);
+  border: 1px solid rgba(184,64,64,0.2);
+  border-radius: 7px;
+  padding: 8px 13px;
+  margin-top: 12px;
 }
-.err.show{display:block;}
+.err.show { display: block; }
 
 /* ── NAV ROW ── */
-.nav-row{
-  display:flex;align-items:center;
-  justify-content:space-between;
-  margin-top:26px;gap:10px;
+.nav-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--cream-2);
 }
-.btn-back{
-  font-family:'Sora',sans-serif;font-size:13.5px;font-weight:400;
-  color:var(--ink-3);background:none;
-  border:1.5px solid var(--border);
-  border-radius:50px;padding:10px 20px;
-  cursor:pointer;transition:all .15s;
-}
-.btn-back:hover{border-color:var(--ink-3);color:var(--ink-2);}
-.btn-next{
-  font-family:'Sora',sans-serif;font-size:14px;font-weight:600;
-  color:#fff;background:var(--teal);
-  border:none;border-radius:50px;
-  padding:12px 28px;cursor:pointer;
-  transition:all .2s;margin-left:auto;
-  display:flex;align-items:center;gap:8px;
-}
-.btn-next:hover{background:var(--teal-2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,110,110,0.3);}
-.btn-submit{
-  font-family:'Sora',sans-serif;font-size:14px;font-weight:600;
-  color:var(--teal-2);background:var(--mint);
-  border:none;border-radius:50px;
-  padding:13px 32px;cursor:pointer;
-  transition:all .2s;margin-left:auto;
-  display:flex;align-items:center;gap:8px;
-}
-.btn-submit:hover{background:var(--glow);transform:translateY(-1px);box-shadow:0 8px 24px rgba(78,205,196,0.4);}
-.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 
-/* ── THANK YOU ── */
-.ty{
-  background:var(--teal-2);border-radius:22px;
-  padding:56px 36px;text-align:center;
-  box-shadow:var(--shadow);position:relative;overflow:hidden;
+.btn-back {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  background: none;
+  border: 1.5px solid var(--border);
+  border-radius: 50px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: all .15s;
+  flex-shrink: 0;
 }
-.ty-ring{
-  width:76px;height:76px;border-radius:50%;
-  background:rgba(78,205,196,0.18);
-  border:2px solid rgba(78,205,196,0.35);
-  display:flex;align-items:center;justify-content:center;
-  font-size:32px;margin:0 auto 22px;
-}
-.ty h2{
-  font-family:'Lora',serif;font-size:28px;
-  font-weight:400;color:#fff;margin-bottom:12px;
-}
-.ty p{font-size:13.5px;color:rgba(168,240,235,.7);line-height:1.7;max-width:360px;margin:0 auto 8px;}
-.ty-ref{font-size:11px;color:rgba(168,240,235,.4);font-family:monospace;margin-top:18px;display:block;}
+.btn-back:hover { border-color: var(--ink-3); color: var(--ink-2); }
 
-@media(max-width:480px){
-  .wrap{padding:28px 10px 60px;}
-  .qcard{padding:24px 18px 20px;}
-  .welcome{padding:40px 22px 36px;}
-  .ty{padding:44px 22px;}
+.btn-next {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--blue);
+  border: none;
+  border-radius: 50px;
+  padding: 12px 30px;
+  cursor: pointer;
+  transition: all .2s;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.btn-next:hover {
+  background: var(--navy-2);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(26,86,196,0.3);
+}
+.btn-next svg { width: 15px; height: 15px; }
+
+.btn-submit {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  background: var(--sky);
+  border: none;
+  border-radius: 50px;
+  padding: 13px 34px;
+  cursor: pointer;
+  transition: all .2s;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.btn-submit:hover {
+  background: var(--glow);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(77,157,224,0.4);
+}
+.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+/* ══════════════════════════════
+   THANK YOU
+══════════════════════════════ */
+.ty-wrap {
+  display: none;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 44px 16px;
+}
+.ty-card {
+  background: var(--navy);
+  border-radius: 22px;
+  padding: 60px 44px;
+  text-align: center;
+  box-shadow: var(--sh-lg);
+  position: relative;
+  overflow: hidden;
+}
+.ty-card::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  border-radius: 50%;
+  border: 1px solid rgba(77,157,224,0.12);
+  pointer-events: none;
+}
+.ty-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(77,157,224,0.15);
+  border: 2px solid rgba(77,157,224,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 34px;
+  margin: 0 auto 24px;
+}
+.ty-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 14px;
+}
+.ty-card p {
+  font-size: 13.5px;
+  color: rgba(168,212,245,0.7);
+  max-width: 380px;
+  margin: 0 auto 10px;
+  line-height: 1.75;
+}
+.ty-ref {
+  display: inline-block;
+  margin-top: 22px;
+  font-size: 11px;
+  color: rgba(168,212,245,0.35);
+  font-family: monospace;
+  letter-spacing: .05em;
+}
+
+/* ══════════════════════════════
+   NOTICE BOX
+══════════════════════════════ */
+.notice {
+  background: var(--green-bg);
+  border: 1px solid rgba(26,122,74,0.2);
+  border-radius: 9px;
+  padding: 12px 15px;
+  font-size: 12.5px;
+  color: var(--green);
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+@media (max-width: 500px) {
+  .wrap { padding: 28px 12px 64px; }
+  .qcard { padding: 24px 18px 22px; }
+  .welcome-top { padding: 36px 24px 28px; }
+  .welcome-cta { padding: 20px 24px 32px; }
+  .supervisor { padding: 14px 24px; }
+  .two-col { grid-template-columns: 1fr; gap: 10px; }
+  .ty-card { padding: 48px 24px; }
 }
 </style>
 </head>
 <body>
 
-<div class="prog-wrap"><div class="prog-fill" id="prog"></div></div>
-<div class="step-badge" id="badge">Step <span id="sc">1</span> of 3</div>
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="prog"><div class="prog-fill" id="prog"></div></div>
+<div class="step-pill" id="pill">Part <span id="sc">1</span> of 3</div>
 
 <div class="wrap">
 <div class="shell" id="shell">
 
-  <!-- ══ SCREEN 0 — WELCOME ══ -->
+  <!-- ══════════════════════════════════════
+       SCREEN 0 — WELCOME / CONSENT
+  ══════════════════════════════════════ -->
   <div class="screen active" id="s0">
     <div class="welcome">
-      <span class="w-icon">🔬</span>
-      <p class="w-eyebrow">NIOMR Lagos · Consumer Research</p>
-      <h1>Microalgae as food — <em>would you?</em></h1>
-      <div class="w-pills">
-        <span class="w-pill">Under 4 minutes</span>
-        <span class="w-pill">7 questions</span>
-        <span class="w-pill">Fully anonymous</span>
+      <div class="welcome-top">
+
+        <div class="inst-row">
+          <div class="inst-logo">🎓</div>
+          <div class="inst-text">
+            <strong>University of Lagos </strong>
+            Consumer Research Study — Microalgae &amp; Functional Foods
+          </div>
+        </div>
+
+        <h1>How do Nigerians<br>perceive <em>microalgae</em><br>as food?</h1>
+
+        <div class="meta-pills">
+          <span class="meta-pill">⏱ Under 5 minutes</span>
+          <span class="meta-pill">14 questions</span>
+          <span class="meta-pill">🔒 Fully anonymous</span>
+          <span class="meta-pill">Voluntary</span>
+        </div>
+
+        <div class="consent">
+          You are invited to participate in a research study on consumer awareness and purchasing behavior regarding <strong>microalgae-based functional food products.</strong> This study is conducted under the supervision of <strong>Prof. T. A. Adesalu, University of Lagos.</strong>
+          <br><br>
+          Participation is <strong>voluntary and completely anonymous.</strong> No identifying information will be collected. You may withdraw at any time by closing this form.
+        </div>
+
       </div>
-      <div class="consent-note">
-        This anonymous survey is part of academic research at the Nigerian Institute for Oceanography and Marine Research (NIOMR). No personal data is collected. Results may be published in a scientific journal.
+
+   
+
+      <div class="welcome-cta">
+        <button class="btn-agree" onclick="startSurvey()">
+          I agree — Begin Survey
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <p class="decline-note">Closing this page counts as declining participation</p>
       </div>
-      <button class="btn-start" onclick="start()">
-        I agree — Start
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </button>
     </div>
   </div>
 
-  <!-- ══ SCREEN 1 — Demographics + Awareness (combined) ══ -->
+
+  <!-- ══════════════════════════════════════
+       SCREEN 1 — PART 1
+       Demographics (Q1–Q5) + Awareness (Q6–Q8)
+  ══════════════════════════════════════ -->
   <div class="screen" id="s1">
     <div class="qcard">
-      <span class="sec-tag">Part 1 of 3 · About you & awareness</span>
-      <h2>Quick background, then <em>what you know</em></h2>
-      <p class="q-hint">All 4 questions on this page — tap and move on.</p>
 
-      <!-- Q1 Age + Q2 Education side context -->
-      <p class="g-label">About you</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+      <div class="card-header">
+        <div class="card-icon ci-blue">👤</div>
         <div>
-          <p style="font-size:12px;font-weight:500;color:var(--ink-2);margin-bottom:7px;">Age group</p>
+          <div class="card-title">Part 1 of 3 — About You &amp; Awareness</div>
+          <div class="card-sub">Questions 1–8 · Demographics and prior knowledge</div>
+        </div>
+      </div>
+
+      <!-- Demographics -->
+      <div class="g-label">About you</div>
+
+      <div class="two-col">
+        <!-- Q1 Age -->
+        <div>
+          <p class="col-label">Q1. Age group <span style="color:#c0522a">*</span></p>
           <div class="opts">
-            <label class="opt"><input type="radio" name="q1" value="18–24"><div class="ctrl r"></div>18–24</label>
-            <label class="opt"><input type="radio" name="q1" value="25–34"><div class="ctrl r"></div>25–34</label>
-            <label class="opt"><input type="radio" name="q1" value="35–44"><div class="ctrl r"></div>35–44</label>
-            <label class="opt"><input type="radio" name="q1" value="45+"><div class="ctrl r"></div>45+</label>
+            <label class="opt"><input type="radio" name="q1" value="18–24"><div class="ctrl r"></div><span class="opt-text">18–24</span></label>
+            <label class="opt"><input type="radio" name="q1" value="25–34"><div class="ctrl r"></div><span class="opt-text">25–34</span></label>
+            <label class="opt"><input type="radio" name="q1" value="35–44"><div class="ctrl r"></div><span class="opt-text">35–44</span></label>
+            <label class="opt"><input type="radio" name="q1" value="45–54"><div class="ctrl r"></div><span class="opt-text">45–54</span></label>
+            <label class="opt"><input type="radio" name="q1" value="55+"><div class="ctrl r"></div><span class="opt-text">55+</span></label>
           </div>
         </div>
+
+        <!-- Q2 Gender -->
         <div>
-          <p style="font-size:12px;font-weight:500;color:var(--ink-2);margin-bottom:7px;">Education</p>
+          <p class="col-label">Q2. Gender <span style="color:#c0522a">*</span></p>
           <div class="opts">
-            <label class="opt"><input type="radio" name="q2" value="Secondary"><div class="ctrl r"></div>Secondary</label>
-            <label class="opt"><input type="radio" name="q2" value="Diploma/OND"><div class="ctrl r"></div>Diploma/OND</label>
-            <label class="opt"><input type="radio" name="q2" value="Degree"><div class="ctrl r"></div>Degree</label>
-            <label class="opt"><input type="radio" name="q2" value="Postgraduate"><div class="ctrl r"></div>Postgrad</label>
+            <label class="opt"><input type="radio" name="q2" value="Male"><div class="ctrl r"></div><span class="opt-text">Male</span></label>
+            <label class="opt"><input type="radio" name="q2" value="Female"><div class="ctrl r"></div><span class="opt-text">Female</span></label>
+            <label class="opt"><input type="radio" name="q2" value="Prefer not to say"><div class="ctrl r"></div><span class="opt-text">Prefer not to say</span></label>
           </div>
         </div>
       </div>
 
-      <p class="g-label">Awareness</p>
+      <div style="height:10px;"></div>
 
-      <!-- Q3 — Have you heard of microalgae -->
-      <p style="font-size:13.5px;font-weight:500;color:var(--ink-2);margin-bottom:8px;">Have you heard of <strong>microalgae</strong> (e.g. spirulina, chlorella) as food or supplements?</p>
-      <div class="opts" style="margin-bottom:16px;">
-        <label class="opt"><input type="radio" name="q3" value="Yes, know it well"><div class="ctrl r"></div>Yes — I know what it is</label>
-        <label class="opt"><input type="radio" name="q3" value="Heard but unsure"><div class="ctrl r"></div>Heard of it but not sure</label>
-        <label class="opt"><input type="radio" name="q3" value="No"><div class="ctrl r"></div>Never heard of it</label>
+      <div class="two-col">
+        <!-- Q3 Education -->
+        <div>
+          <p class="col-label">Q3. Education <span style="color:#c0522a">*</span></p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="q3" value="Secondary (WAEC/NECO)"><div class="ctrl r"></div><span class="opt-text">Secondary (WAEC/NECO)</span></label>
+            <label class="opt"><input type="radio" name="q3" value="Diploma/OND/NCE"><div class="ctrl r"></div><span class="opt-text">Diploma / OND / NCE</span></label>
+            <label class="opt"><input type="radio" name="q3" value="Bachelor's degree"><div class="ctrl r"></div><span class="opt-text">Bachelor's degree</span></label>
+            <label class="opt"><input type="radio" name="q3" value="Postgraduate"><div class="ctrl r"></div><span class="opt-text">Postgraduate (M.Sc. / Ph.D.)</span></label>
+          </div>
+        </div>
+
+        <!-- Q4 Occupation -->
+        <div>
+          <p class="col-label">Q4. Occupation <span style="color:#c0522a">*</span></p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="q4" value="Student"><div class="ctrl r"></div><span class="opt-text">Student</span></label>
+            <label class="opt"><input type="radio" name="q4" value="Civil servant"><div class="ctrl r"></div><span class="opt-text">Civil servant</span></label>
+            <label class="opt"><input type="radio" name="q4" value="Private sector"><div class="ctrl r"></div><span class="opt-text">Private sector</span></label>
+            <label class="opt"><input type="radio" name="q4" value="Self-employed"><div class="ctrl r"></div><span class="opt-text">Self-employed</span></label>
+            <label class="opt"><input type="radio" name="q4" value="Healthcare professional"><div class="ctrl r"></div><span class="opt-text">Healthcare professional</span></label>
+            <label class="opt"><input type="radio" name="q4" value="Other"><div class="ctrl r"></div><span class="opt-text">Other</span></label>
+          </div>
+        </div>
       </div>
 
-      <!-- Q4 — Have you used any -->
-      <p style="font-size:13.5px;font-weight:500;color:var(--ink-2);margin-bottom:8px;">Have you ever bought or used a microalgae-based product? <span style="font-weight:400;color:var(--ink-3)">(spirulina powder, chlorella tablets, algae omega-3…)</span></p>
+      <div style="height:10px;"></div>
+
+      <div class="two-col">
+        <!-- Q5 Location -->
+        <div>
+          <p class="col-label">Q5. Area of Lagos <span style="color:#c0522a">*</span></p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="q5" value="Lagos Island/Eti-Osa"><div class="ctrl r"></div><span class="opt-text">Lagos Island / Eti-Osa</span></label>
+            <label class="opt"><input type="radio" name="q5" value="Mainland/Surulere/Shomolu"><div class="ctrl r"></div><span class="opt-text">Mainland / Surulere</span></label>
+            <label class="opt"><input type="radio" name="q5" value="Ikeja/Agege/Alimosho"><div class="ctrl r"></div><span class="opt-text">Ikeja / Agege / Alimosho</span></label>
+            <label class="opt"><input type="radio" name="q5" value="Lekki/Ajah/Ibeju-Lekki"><div class="ctrl r"></div><span class="opt-text">Lekki / Ajah</span></label>
+            <label class="opt"><input type="radio" name="q5" value="Badagry/Epe"><div class="ctrl r"></div><span class="opt-text">Badagry / Epe</span></label>
+            <label class="opt"><input type="radio" name="q5" value="Other area in Lagos"><div class="ctrl r"></div><span class="opt-text">Other (Lagos)</span></label>
+          </div>
+        </div>
+
+        <!-- Q6 Income -->
+        <div>
+          <p class="col-label">Q6. Monthly income <span style="color:#c0522a">*</span></p>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="q6" value="Below ₦50,000"><div class="ctrl r"></div><span class="opt-text">Below ₦50,000</span></label>
+            <label class="opt"><input type="radio" name="q6" value="₦50,000–₦150,000"><div class="ctrl r"></div><span class="opt-text">₦50k – ₦150k</span></label>
+            <label class="opt"><input type="radio" name="q6" value="₦150,001–₦300,000"><div class="ctrl r"></div><span class="opt-text">₦150k – ₦300k</span></label>
+            <label class="opt"><input type="radio" name="q6" value="₦300,001–₦500,000"><div class="ctrl r"></div><span class="opt-text">₦300k – ₦500k</span></label>
+            <label class="opt"><input type="radio" name="q6" value="Above ₦500,000"><div class="ctrl r"></div><span class="opt-text">Above ₦500k</span></label>
+            <label class="opt"><input type="radio" name="q6" value="Prefer not to say"><div class="ctrl r"></div><span class="opt-text">Prefer not to say</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Awareness -->
+      <div class="g-label">Awareness</div>
+
+      <!-- Q7 — General awareness -->
+      <p class="q-label">Q7. Before today, had you heard of <strong>microalgae</strong> being used as food or nutritional supplements? <span style="color:#c0522a">*</span></p>
+      <div class="opts" style="margin-bottom:18px;">
+        <label class="opt"><input type="radio" name="q7" value="Yes, know it well"><div class="ctrl r"></div><span class="opt-text">Yes — I know what it is</span></label>
+        <label class="opt"><input type="radio" name="q7" value="Heard but unsure"><div class="ctrl r"></div><span class="opt-text">I have heard the term but I am not sure what it means</span></label>
+        <label class="opt"><input type="radio" name="q7" value="No"><div class="ctrl r"></div><span class="opt-text">No — I have never heard of microalgae as food</span></label>
+      </div>
+
+      <!-- Q8 — Product recognition -->
+      <p class="q-label">Q8. Which of these microalgae products have you come across? <span style="color:#c0522a">*</span>
+        <span class="sub">Select all that apply</span>
+      </p>
       <div class="opts">
-        <label class="opt"><input type="radio" name="q4" value="Yes, currently use"><div class="ctrl r"></div>Yes — I use them now</label>
-        <label class="opt"><input type="radio" name="q4" value="Yes, used before"><div class="ctrl r"></div>Yes — I used to</label>
-        <label class="opt"><input type="radio" name="q4" value="No, considered"><div class="ctrl r"></div>No — but I've thought about it</label>
-        <label class="opt"><input type="radio" name="q4" value="No, never"><div class="ctrl r"></div>No — never considered it</label>
+        <label class="opt"><input type="checkbox" name="q8" value="Spirulina powder or capsules"><div class="ctrl s"></div><span class="opt-text">Spirulina powder or capsules</span></label>
+        <label class="opt"><input type="checkbox" name="q8" value="Chlorella tablets"><div class="ctrl s"></div><span class="opt-text">Chlorella tablets</span></label>
+        <label class="opt"><input type="checkbox" name="q8" value="Algae-based omega-3 supplements"><div class="ctrl s"></div><span class="opt-text">Algae-based omega-3 supplements</span></label>
+        <label class="opt"><input type="checkbox" name="q8" value="Algae-enriched drinks or smoothies"><div class="ctrl s"></div><span class="opt-text">Algae-enriched drinks or smoothies</span></label>
+        <label class="opt"><input type="checkbox" name="q8" value="None of the above"><div class="ctrl s"></div><span class="opt-text">None of the above</span></label>
       </div>
 
-      <div class="err" id="err1">Please answer all required questions above.</div>
+      <div class="err" id="err1">Please answer all required questions marked with * before continuing.</div>
+
       <div class="nav-row">
         <button class="btn-back" onclick="goTo(0)">← Back</button>
         <button class="btn-next" onclick="validateP1()">
           Next
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </div>
+
     </div>
   </div>
 
-  <!-- ══ SCREEN 2 — Perception + WTP (combined) ══ -->
+
+  <!-- ══════════════════════════════════════
+       SCREEN 2 — PART 2
+       Perception (Q9) + WTP (Q10–Q11) + Info source (Q12)
+  ══════════════════════════════════════ -->
   <div class="screen" id="s2">
     <div class="qcard">
-      <span class="sec-tag">Part 2 of 3 · What you think & what you'd pay</span>
-      <h2>Your <em>views</em> on microalgae as food</h2>
-      <p class="q-hint">Rate 3 statements, then answer 2 quick questions.</p>
 
-      <!-- Q5 — Likert perception (3 items) -->
-      <p class="g-label">How much do you agree? &nbsp;<span style="font-weight:400;font-size:10.5px;letter-spacing:0;text-transform:none;color:var(--ink-3)">1 = Disagree · 5 = Agree</span></p>
-
-      <div class="likert-row">
-        <p class="l-stmt">Microalgae-based foods are beneficial for human health.</p>
-        <div class="l-scale">
-          <button type="button" class="l-btn" onclick="lk('q5a',1,this)">1</button>
-          <button type="button" class="l-btn" onclick="lk('q5a',2,this)">2</button>
-          <button type="button" class="l-btn" onclick="lk('q5a',3,this)">3</button>
-          <button type="button" class="l-btn" onclick="lk('q5a',4,this)">4</button>
-          <button type="button" class="l-btn" onclick="lk('q5a',5,this)">5</button>
+      <div class="card-header">
+        <div class="card-icon ci-teal">🧠</div>
+        <div>
+          <div class="card-title">Part 2 of 3 — Perception &amp; Willingness to Pay</div>
+          <div class="card-sub">Questions 9–12 · Your views and purchase intent</div>
         </div>
-        <div class="l-ends"><span>Disagree</span><span>Agree</span></div>
       </div>
+
+      <!-- Q9 — Likert perception (5 items) -->
+      <div class="g-label">How much do you agree?</div>
+      <p style="font-size:12px;color:var(--ink-3);margin-bottom:14px;">1 = Strongly disagree &nbsp;·&nbsp; 5 = Strongly agree</p>
+
+      <div class="likert-block">
+        <p class="l-stmt">Microalgae-based foods are <strong>beneficial for human health.</strong></p>
+        <div class="l-scale">
+          <button type="button" class="l-btn" onclick="lk('q9a',1,this)">1</button>
+          <button type="button" class="l-btn" onclick="lk('q9a',2,this)">2</button>
+          <button type="button" class="l-btn" onclick="lk('q9a',3,this)">3</button>
+          <button type="button" class="l-btn" onclick="lk('q9a',4,this)">4</button>
+          <button type="button" class="l-btn" onclick="lk('q9a',5,this)">5</button>
+        </div>
+        <div class="l-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+
       <hr class="l-divider">
-      <div class="likert-row">
-        <p class="l-stmt">I would feel comfortable adding microalgae products to my diet.</p>
+
+      <div class="likert-block">
+        <p class="l-stmt">I would feel <strong>comfortable</strong> adding microalgae products to my regular diet.</p>
         <div class="l-scale">
-          <button type="button" class="l-btn" onclick="lk('q5b',1,this)">1</button>
-          <button type="button" class="l-btn" onclick="lk('q5b',2,this)">2</button>
-          <button type="button" class="l-btn" onclick="lk('q5b',3,this)">3</button>
-          <button type="button" class="l-btn" onclick="lk('q5b',4,this)">4</button>
-          <button type="button" class="l-btn" onclick="lk('q5b',5,this)">5</button>
+          <button type="button" class="l-btn" onclick="lk('q9b',1,this)">1</button>
+          <button type="button" class="l-btn" onclick="lk('q9b',2,this)">2</button>
+          <button type="button" class="l-btn" onclick="lk('q9b',3,this)">3</button>
+          <button type="button" class="l-btn" onclick="lk('q9b',4,this)">4</button>
+          <button type="button" class="l-btn" onclick="lk('q9b',5,this)">5</button>
         </div>
-        <div class="l-ends"><span>Disagree</span><span>Agree</span></div>
+        <div class="l-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
       </div>
+
       <hr class="l-divider">
-      <div class="likert-row" style="margin-bottom:4px;">
-        <p class="l-stmt">I trust the safety of microalgae food products sold in Nigeria.</p>
+
+      <div class="likert-block">
+        <p class="l-stmt">I <strong>trust the safety</strong> of microalgae food products available in Nigeria.</p>
         <div class="l-scale">
-          <button type="button" class="l-btn" onclick="lk('q5c',1,this)">1</button>
-          <button type="button" class="l-btn" onclick="lk('q5c',2,this)">2</button>
-          <button type="button" class="l-btn" onclick="lk('q5c',3,this)">3</button>
-          <button type="button" class="l-btn" onclick="lk('q5c',4,this)">4</button>
-          <button type="button" class="l-btn" onclick="lk('q5c',5,this)">5</button>
+          <button type="button" class="l-btn" onclick="lk('q9c',1,this)">1</button>
+          <button type="button" class="l-btn" onclick="lk('q9c',2,this)">2</button>
+          <button type="button" class="l-btn" onclick="lk('q9c',3,this)">3</button>
+          <button type="button" class="l-btn" onclick="lk('q9c',4,this)">4</button>
+          <button type="button" class="l-btn" onclick="lk('q9c',5,this)">5</button>
         </div>
-        <div class="l-ends"><span>Disagree</span><span>Agree</span></div>
+        <div class="l-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
       </div>
 
-      <input type="hidden" id="q5a" value="">
-      <input type="hidden" id="q5b" value="">
-      <input type="hidden" id="q5c" value="">
+      <hr class="l-divider">
 
-      <!-- Q6 — WTP -->
-      <p class="g-label" style="margin-top:22px;">Willingness to pay</p>
-      <p style="font-size:13.5px;font-weight:500;color:var(--ink-2);margin-bottom:8px;">If a 100g pack of spirulina powder were available locally, how much would you pay?</p>
+      <div class="likert-block">
+        <p class="l-stmt">Microalgae products could <strong>fit into Nigerian food culture</strong> and cuisine.</p>
+        <div class="l-scale">
+          <button type="button" class="l-btn" onclick="lk('q9d',1,this)">1</button>
+          <button type="button" class="l-btn" onclick="lk('q9d',2,this)">2</button>
+          <button type="button" class="l-btn" onclick="lk('q9d',3,this)">3</button>
+          <button type="button" class="l-btn" onclick="lk('q9d',4,this)">4</button>
+          <button type="button" class="l-btn" onclick="lk('q9d',5,this)">5</button>
+        </div>
+        <div class="l-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+
+      <hr class="l-divider">
+
+      <div class="likert-block" style="margin-bottom:6px;">
+        <p class="l-stmt">I trust the <strong>quality</strong> of locally available microalgae food products.</p>
+        <div class="l-scale">
+          <button type="button" class="l-btn" onclick="lk('q9e',1,this)">1</button>
+          <button type="button" class="l-btn" onclick="lk('q9e',2,this)">2</button>
+          <button type="button" class="l-btn" onclick="lk('q9e',3,this)">3</button>
+          <button type="button" class="l-btn" onclick="lk('q9e',4,this)">4</button>
+          <button type="button" class="l-btn" onclick="lk('q9e',5,this)">5</button>
+        </div>
+        <div class="l-ends"><span>Strongly disagree</span><span>Strongly agree</span></div>
+      </div>
+
+      <input type="hidden" id="q9a" value="">
+      <input type="hidden" id="q9b" value="">
+      <input type="hidden" id="q9c" value="">
+      <input type="hidden" id="q9d" value="">
+      <input type="hidden" id="q9e" value="">
+
+      <!-- WTP -->
+      <div class="g-label">Willingness to pay</div>
+
+      <!-- Q10 — WTP spirulina -->
+      <p class="q-label">Q10. If a 100g pack of <strong>spirulina powder</strong> were available at a Lagos pharmacy or supermarket, how much would you be willing to pay? <span style="color:#c0522a">*</span></p>
+      <div class="opts" style="margin-bottom:18px;">
+        <label class="opt"><input type="radio" name="q10" value="Below ₦2,000"><div class="ctrl r"></div><span class="opt-text">Below ₦2,000</span></label>
+        <label class="opt"><input type="radio" name="q10" value="₦2,000–₦5,000"><div class="ctrl r"></div><span class="opt-text">₦2,000 – ₦5,000</span></label>
+        <label class="opt"><input type="radio" name="q10" value="₦5,000–₦10,000"><div class="ctrl r"></div><span class="opt-text">₦5,000 – ₦10,000</span></label>
+        <label class="opt"><input type="radio" name="q10" value="Above ₦10,000"><div class="ctrl r"></div><span class="opt-text">Above ₦10,000</span></label>
+        <label class="opt"><input type="radio" name="q10" value="Would not buy"><div class="ctrl r"></div><span class="opt-text">Would not buy it</span></label>
+      </div>
+
+      <!-- Q11 — Preferred format -->
+      <p class="q-label">Q11. In what form would you most prefer to consume microalgae? <span style="color:#c0522a">*</span></p>
+      <div class="opts" style="margin-bottom:18px;">
+        <label class="opt"><input type="radio" name="q11" value="Powder (added to food or drinks)"><div class="ctrl r"></div><span class="opt-text">Powder added to food or drinks</span></label>
+        <label class="opt"><input type="radio" name="q11" value="Capsules or tablets"><div class="ctrl r"></div><span class="opt-text">Capsules or tablets</span></label>
+        <label class="opt"><input type="radio" name="q11" value="Fortified staple foods (bread/garri/noodles)"><div class="ctrl r"></div><span class="opt-text">Fortified into staple foods (bread, garri, noodles)</span></label>
+        <label class="opt"><input type="radio" name="q11" value="Ready-to-drink beverage"><div class="ctrl r"></div><span class="opt-text">Ready-to-drink beverage</span></label>
+        <label class="opt"><input type="radio" name="q11" value="Would not consume in any form"><div class="ctrl r"></div><span class="opt-text">Would not consume in any form</span></label>
+      </div>
+
+      <!-- Q12 — Information source -->
+      <div class="g-label">Information source</div>
+      <p class="q-label">Q12. Where do you primarily get information about new food or nutrition products? <span style="color:#c0522a">*</span></p>
       <div class="opts">
-        <label class="opt"><input type="radio" name="q6" value="Below ₦2,000"><div class="ctrl r"></div>Below ₦2,000</label>
-        <label class="opt"><input type="radio" name="q6" value="₦2,000–₦5,000"><div class="ctrl r"></div>₦2,000 – ₦5,000</label>
-        <label class="opt"><input type="radio" name="q6" value="₦5,000–₦10,000"><div class="ctrl r"></div>₦5,000 – ₦10,000</label>
-        <label class="opt"><input type="radio" name="q6" value="Above ₦10,000"><div class="ctrl r"></div>Above ₦10,000</label>
-        <label class="opt"><input type="radio" name="q6" value="Would not buy"><div class="ctrl r"></div>Would not buy it</label>
+        <label class="opt"><input type="radio" name="q12" value="Social media (Instagram/TikTok/YouTube/X)"><div class="ctrl r"></div><span class="opt-text">Social media (Instagram, TikTok, YouTube, X)</span></label>
+        <label class="opt"><input type="radio" name="q12" value="Healthcare professional"><div class="ctrl r"></div><span class="opt-text">Healthcare professional</span></label>
+        <label class="opt"><input type="radio" name="q12" value="Health blogs or websites"><div class="ctrl r"></div><span class="opt-text">Health blogs or websites</span></label>
+        <label class="opt"><input type="radio" name="q12" value="Friends and family"><div class="ctrl r"></div><span class="opt-text">Friends and family</span></label>
+        <label class="opt"><input type="radio" name="q12" value="Supermarket or product packaging"><div class="ctrl r"></div><span class="opt-text">Supermarket or product packaging</span></label>
+        <label class="opt"><input type="radio" name="q12" value="TV or radio"><div class="ctrl r"></div><span class="opt-text">TV or radio</span></label>
       </div>
 
-      <div class="err" id="err2">Please complete all fields above.</div>
+      <div class="err" id="err2">Please complete all required questions above.</div>
+
       <div class="nav-row">
         <button class="btn-back" onclick="goTo(1)">← Back</button>
         <button class="btn-next" onclick="validateP2()">
           Last step
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </div>
+
     </div>
   </div>
 
-  <!-- ══ SCREEN 3 — Barriers + Open text + Submit ══ -->
+
+  <!-- ══════════════════════════════════════
+       SCREEN 3 — PART 3
+       Barrier (Q13) + Open text (Q14) + Submit
+  ══════════════════════════════════════ -->
   <div class="screen" id="s3">
     <div class="qcard">
-      <span class="sec-tag">Part 3 of 3 · Final question + submit</span>
-      <h2>One last thing, then <em>you're done</em></h2>
 
-      <!-- Q7 — Barrier -->
-      <p class="g-label">Biggest barrier</p>
-      <p style="font-size:13.5px;font-weight:500;color:var(--ink-2);margin-bottom:8px;">What is the single biggest barrier preventing you from buying microalgae food products?</p>
-      <div class="opts" style="margin-bottom:20px;">
-        <label class="opt"><input type="radio" name="q7" value="Too expensive"><div class="ctrl r"></div>Too expensive</label>
-        <label class="opt"><input type="radio" name="q7" value="Can't find them locally"><div class="ctrl r"></div>Can't find them in local markets</label>
-        <label class="opt"><input type="radio" name="q7" value="Don't trust quality/safety"><div class="ctrl r"></div>Don't trust the quality or safety</label>
-        <label class="opt"><input type="radio" name="q7" value="Don't know how to use them"><div class="ctrl r"></div>Don't know how to use them</label>
-        <label class="opt"><input type="radio" name="q7" value="Taste/texture concerns"><div class="ctrl r"></div>Taste or texture concerns</label>
-        <label class="opt"><input type="radio" name="q7" value="No barrier"><div class="ctrl r"></div>No barrier — I would buy them</label>
+      <div class="card-header">
+        <div class="card-icon ci-gold">🚧</div>
+        <div>
+          <div class="card-title">Part 3 of 3 — Barriers &amp; Final Thoughts</div>
+          <div class="card-sub">Questions 13–14 · Last section — almost done</div>
+        </div>
       </div>
 
-      <!-- Optional open text -->
-      <p class="g-label" style="margin-top:4px;">Any thoughts? <span style="font-weight:400;font-size:10.5px;letter-spacing:0;text-transform:none;color:var(--ink-3)">Optional</span></p>
-      <textarea id="q8" name="q8" placeholder="Share any experience, opinion, or idea about microalgae as food in Nigeria…"></textarea>
-
-      <div style="background:rgba(13,110,110,0.05);border:1px solid var(--border);border-radius:9px;padding:12px 14px;margin-top:16px;font-size:12px;color:var(--ink-3);line-height:1.6;">
-        By submitting you confirm participation is voluntary and anonymous. Contact: <strong style="color:var(--ink-2);">[your.email@niomr.gov.ng]</strong>
+      <!-- Q13 — Barrier -->
+      <div class="g-label">Adoption barrier</div>
+      <p class="q-label">Q13. What is the single biggest barrier preventing you from buying microalgae-based food products? <span style="color:#c0522a">*</span></p>
+      <div class="opts" style="margin-bottom:22px;">
+        <label class="opt"><input type="radio" name="q13" value="Too expensive"><div class="ctrl r"></div><span class="opt-text">Too expensive</span></label>
+        <label class="opt"><input type="radio" name="q13" value="Cannot find them in local markets"><div class="ctrl r"></div><span class="opt-text">Cannot find them in local markets or pharmacies</span></label>
+        <label class="opt"><input type="radio" name="q13" value="Do not trust the quality or safety"><div class="ctrl r"></div><span class="opt-text">Do not trust the quality or safety</span></label>
+        <label class="opt"><input type="radio" name="q13" value="Do not know how to use them"><div class="ctrl r"></div><span class="opt-text">Do not know how to prepare or use them</span></label>
+        <label class="opt"><input type="radio" name="q13" value="Taste or texture concerns"><div class="ctrl r"></div><span class="opt-text">Taste or texture concerns</span></label>
+        <label class="opt"><input type="radio" name="q13" value="No barrier — I would buy them"><div class="ctrl r"></div><span class="opt-text">No barrier — I would buy them</span></label>
       </div>
 
-      <div class="err" id="err3">Please select a barrier option above.</div>
+      <!-- Q14 — Open text -->
+      <div class="g-label">Your thoughts <span style="font-weight:400;font-size:10px;letter-spacing:0;text-transform:none;color:var(--ink-3)">Optional</span></div>
+      <p class="q-label">Q14. Any other thoughts about microalgae as food or supplements in Nigeria?</p>
+      <textarea id="q14" name="q14" placeholder="Share any experience, idea, or concern you have about microalgae food products in Nigeria…"></textarea>
+
+      <div class="notice">
+        By submitting you confirm that participation is voluntary and your responses are anonymous. This study is supervised by <strong>Prof. T. A. Adesalu, University of Lagos.</strong> For enquiries contact: <strong>[170803091@live.unilg.edu.ng]</strong>
+      </div>
+
+      <div class="err" id="err3">Please select a barrier option above before submitting.</div>
 
       <div class="nav-row">
         <button class="btn-back" onclick="goTo(2)">← Back</button>
         <button class="btn-submit" id="sub-btn" onclick="submitForm()">
-          Submit ✓
+          Submit Survey ✓
         </button>
       </div>
+
     </div>
   </div>
 
 </div><!-- /shell -->
 
-<!-- THANK YOU -->
-<div id="ty-screen" style="display:none;position:relative;z-index:1;width:100%;max-width:600px;margin:0 auto;padding:40px 16px;">
-  <div class="ty">
-    <div class="ty-ring">🔬</div>
+<!-- THANK YOU SCREEN -->
+<div class="ty-wrap" id="ty-wrap">
+  <div class="ty-card">
+    <div class="ty-icon">✅</div>
     <h2>Thank you!</h2>
-    <p>Your response has been recorded. You've contributed to the first microalgae consumer study in Lagos, Nigeria.</p>
-    <p>Results will be published in a peer-reviewed journal.</p>
-    <span class="ty-ref" id="ty-ref">ref: —</span>
+    <p>Your response has been recorded and contributes to the first consumer study on microalgae food products in Lagos, Nigeria.</p>
+    <p>This study is supervised by <strong style="color:rgba(168,212,245,0.9);">Prof. T. A. Adesalu</strong>, University of Lagos. Results will be published in a peer-reviewed journal.</p>
+    <span class="ty-ref" id="ty-ref">Reference: —</span>
   </div>
 </div>
 
 </div><!-- /wrap -->
 
 <script>
-/* ── STATE ── */
+/* ════════════════════════════════
+   CONFIG
+════════════════════════════════ */
 const WEB_APP = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec'
 let cur = 0
 
-/* ── NAV ── */
+/* ════════════════════════════════
+   NAVIGATION
+════════════════════════════════ */
 function goTo(n) {
   document.getElementById('s' + cur).classList.remove('active')
   cur = n
@@ -570,17 +1065,20 @@ function goTo(n) {
   updateUI()
 }
 
-function start() {
-  document.getElementById('badge').style.display = 'block'
+function startSurvey() {
+  document.getElementById('pill').style.display = 'block'
   goTo(1)
 }
 
 function updateUI() {
-  document.getElementById('prog').style.width = (cur / 3 * 100) + '%'
-  document.getElementById('sc').textContent = cur
+  const pct = Math.round((cur / 3) * 100)
+  document.getElementById('prog').style.width = pct + '%'
+  document.getElementById('sc').textContent = Math.max(cur, 1)
 }
 
-/* ── LIKERT ── */
+/* ════════════════════════════════
+   LIKERT
+════════════════════════════════ */
 function lk(id, val, btn) {
   document.getElementById(id).value = val
   const scale = btn.closest('.l-scale')
@@ -588,73 +1086,116 @@ function lk(id, val, btn) {
   btn.classList.add('on')
 }
 
-/* ── VALIDATION ── */
+/* ════════════════════════════════
+   DATA HELPERS
+════════════════════════════════ */
 function getR(name) {
-  const el = document.querySelector('input[name="' + name + '"]:checked')
+  const el = document.querySelector(`input[name="${name}"]:checked`)
   return el ? el.value : ''
 }
 
+function getCB(name) {
+  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`))
+    .map(el => el.value)
+}
+
+function getLK(id) {
+  return document.getElementById(id)?.value || ''
+}
+
+function sumLK(ids) {
+  const nums = ids.map(id => parseInt(getLK(id))).filter(n => !isNaN(n))
+  return nums.length ? nums.reduce((a, b) => a + b, 0) : ''
+}
+
+/* ════════════════════════════════
+   VALIDATION
+════════════════════════════════ */
+function showErr(id) { document.getElementById(id).classList.add('show') }
+function hideErr(id) { document.getElementById(id).classList.remove('show') }
+
 function validateP1() {
-  const ok = getR('q1') && getR('q2') && getR('q3') && getR('q4')
-  if (!ok) { document.getElementById('err1').classList.add('show'); return }
-  document.getElementById('err1').classList.remove('show')
+  const required = ['q1','q2','q3','q4','q5','q6','q7']
+  const missing = required.some(name => !getR(name))
+  if (missing) { showErr('err1'); return }
+  // Q8 checkbox — at least one must be checked
+  if (getCB('q8').length === 0) { showErr('err1'); return }
+  hideErr('err1')
   goTo(2)
 }
 
 function validateP2() {
-  const ok = getR('q6') // likert optional — they may skip
-  if (!ok) { document.getElementById('err2').classList.add('show'); return }
-  document.getElementById('err2').classList.remove('show')
+  const required = ['q10','q11','q12']
+  const missing = required.some(name => !getR(name))
+  if (missing) { showErr('err2'); return }
+  hideErr('err2')
   goTo(3)
 }
 
-/* ── SUBMIT ── */
+/* ════════════════════════════════
+   SUBMIT
+════════════════════════════════ */
 async function submitForm() {
-  const barrier = getR('q7')
-  if (!barrier) { document.getElementById('err3').classList.add('show'); return }
-  document.getElementById('err3').classList.remove('show')
+  if (!getR('q13')) { showErr('err3'); return }
+  hideErr('err3')
 
   const btn = document.getElementById('sub-btn')
   btn.disabled = true
   btn.textContent = 'Submitting…'
 
-  const q5a = document.getElementById('q5a').value
-  const q5b = document.getElementById('q5b').value
-  const q5c = document.getElementById('q5c').value
-  const score = [q5a, q5b, q5c]
-    .map(v => parseInt(v)).filter(n => !isNaN(n))
-    .reduce((a, b) => a + b, 0) || ''
+  const q9ids = ['q9a','q9b','q9c','q9d','q9e']
 
   const payload = {
-    q1_age:             getR('q1'),
-    q2_education:       getR('q2'),
-    q3_awareness:       getR('q3'),
-    q4_priorUse:        getR('q4'),
-    q5a_perception_health:    q5a,
-    q5b_perception_comfort:   q5b,
-    q5c_perception_safety:    q5c,
-    q5_perceptionScore:       score,
-    q6_wtp:             getR('q6'),
-    q7_barrier:         barrier,
-    q8_openText:        document.getElementById('q8').value.trim()
+    // Block 1 — Demographics
+    Q1_Age:           getR('q1'),
+    Q2_Gender:        getR('q2'),
+    Q3_Education:     getR('q3'),
+    Q4_Occupation:    getR('q4'),
+    Q5_Location:      getR('q5'),
+    Q6_Income:        getR('q6'),
+
+    // Block 2 — Awareness
+    Q7_Awareness:     getR('q7'),
+    Q8_ProductsKnown: getCB('q8').join('; '),
+
+    // Block 3 — Perception
+    Q9a_Health:       getLK('q9a'),
+    Q9b_Comfort:      getLK('q9b'),
+    Q9c_Safety:       getLK('q9c'),
+    Q9d_CulturalFit:  getLK('q9d'),
+    Q9e_Quality:      getLK('q9e'),
+    Q9_PerceptionScore: sumLK(q9ids),
+
+    // Block 4 — WTP
+    Q10_WTP_Spirulina: getR('q10'),
+    Q11_PreferredFormat: getR('q11'),
+
+    // Block 5 — Info + Barrier
+    Q12_InfoSource:   getR('q12'),
+    Q13_Barrier:      getR('q13'),
+    Q14_OpenText:     document.getElementById('q14').value.trim()
   }
 
   try {
-    const res = await fetch(WEB_APP, { method: 'POST', body: JSON.stringify(payload) })
+    const res = await fetch(WEB_APP, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    })
     const result = await res.json()
     if (result.status === 'success') { done(); return }
-  } catch(e) {}
-  // show thank you regardless (for GitHub Pages testing)
+  } catch (e) {
+    // Falls through to done() for GitHub Pages testing
+  }
   done()
 }
 
 function done() {
   document.getElementById('shell').style.display = 'none'
-  document.getElementById('ty-screen').style.display = 'block'
-  document.getElementById('badge').style.display = 'none'
+  document.getElementById('ty-wrap').style.display = 'block'
+  document.getElementById('pill').style.display = 'none'
   document.getElementById('prog').style.width = '100%'
   document.getElementById('ty-ref').textContent =
-    'Reference: NIOMR-' + Date.now().toString(36).toUpperCase()
+    'Reference: UNILAG-' + Date.now().toString(36).toUpperCase()
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 </script>
